@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 214ce865a5fadb14092a5b8aa5ba010c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mazePrefab: {instanceID: 0}
+  - playerPrefab: {instanceID: 0}
+  - zombiePrefab: {fileID: 3453056023929791542, guid: 43b3bfc3c2f2ff146a8d85e63d0a4e26, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
