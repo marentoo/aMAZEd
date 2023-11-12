@@ -444,6 +444,8 @@ GameObject:
   - component: {fileID: 623375191}
   - component: {fileID: 623375192}
   - component: {fileID: 623375193}
+  - component: {fileID: 623375194}
+  - component: {fileID: 623375195}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -480,6 +482,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mazePrefab: {fileID: 11400000, guid: a2395bb8a91944f21b621f2614d6db99, type: 3}
   playerPrefab: {fileID: -8370215541010456753, guid: 217c03df26a2c8e479178e2e43622a36, type: 3}
+  zombiePrefab: {fileID: 3453056023929791542, guid: 43b3bfc3c2f2ff146a8d85e63d0a4e26, type: 3}
+  numberOfZombies: 10
+  keyPrefab: {fileID: 374289202576707483, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
+  numberOfKeys: 3
 --- !u!114 &623375193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +500,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 486456776}
   isPaused: 0
+--- !u!114 &623375194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623375190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23adaf7c14fb1e944a1457f4edfbfdf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &623375195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623375190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4926471f2bd84b64da91679260596513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &640554561
 GameObject:
   m_ObjectHideFlags: 0
