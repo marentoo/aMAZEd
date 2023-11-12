@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
     private bool isRotating;
 
     private float moveThreshold = 0.1f;
+    private int keyCount = 0;
 
 
     private void Move(MazeDirection direction)
@@ -227,6 +228,10 @@ public class Player : MonoBehaviour
             targetPosition = targetCell.transform.localPosition;
             isMoving = true; // Now we're ready to move towards the target.
         }
+    }
+    public void AddKey()
+    {
+        keyCount++;
     }
 
     private void MoveTowardsTargetSmooth()
