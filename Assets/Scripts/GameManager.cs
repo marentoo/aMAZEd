@@ -32,6 +32,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //[SerializeField]
+    private MazeNavMeshBuilder nmBuilder;
+
+    private void Awake(){
+
+        nmBuilder = GetComponent<MazeNavMeshBuilder>();
+    }
+
     private IEnumerator BeginGame()
     {
         Camera.main.clearFlags = CameraClearFlags.Skybox;
@@ -44,6 +52,7 @@ public class GameManager : MonoBehaviour
         // Instantiate the player and set location.
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
+        nmBuilder.BuildNavMesh();
 
         ////NavMash handling
         //var navMeshSurface = mazeInstance.GetComponent<NavMeshSurface>();

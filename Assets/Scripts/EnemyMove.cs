@@ -4,7 +4,7 @@ and interact with the player. This includes following the player,
 attacking, and possibly retreating or other complex movements.
  */
 
-/*
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -44,4 +44,3 @@ public class enemymove : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5.0f); // Smooth rotation
     }
 }
-*/
