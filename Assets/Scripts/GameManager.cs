@@ -29,9 +29,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) { RestartGame(); }
-
-    // Close doors when 'O' or 'Enter' is pressed 
-        //if (Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Return)) { ToggleDoors(true); }
     }
 
     //[SerializeField]
@@ -55,17 +52,6 @@ public class GameManager : MonoBehaviour
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
         nmBuilder.BuildNavMesh();
-
-        ////NavMash handling
-        //var navMeshSurface = mazeInstance.GetComponent<NavMeshSurface>();
-        //if (navMeshSurface == null)
-        //{
-        //    navMeshSurface = mazeInstance.gameObject.AddComponent<NavMeshSurface>();
-        //}
-
-        //navMeshSurface.collectObjects = CollectObjects.Children;
-        //navMeshSurface.layerMask = LayerMask.GetMask("Walkable");
-        //navMeshSurface.BuildNavMesh();
 
         // Instantiate the zombies and keys
         SpawnZombies(numberOfZombies);
@@ -107,22 +93,8 @@ public class GameManager : MonoBehaviour
             zombieInstance.SetLocation(cell);
             zombieInstance.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f); // Adjust these values as needed
         }
-        /*
-        for (int i = 0; i < count; i++){
-            zombieInstance = Instantiate(zombiePrefab) as Zombie;
-            zombieInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
-            zombieInstance.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f); // Adjust these values as needed
-        }*/
     }
 
-    /*
-    private void ToggleDoors(bool close)
-    {
-        foreach (var door in doors)
-        {
-            door.SetOpen(!close); // Close or open the door based on the 'close' parameter
-        }
-    }*/
 
     private void SpawnKeys(int count)
     {

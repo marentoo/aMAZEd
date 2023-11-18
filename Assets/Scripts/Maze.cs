@@ -111,38 +111,6 @@ public class Maze : MonoBehaviour {
     }
 }
 
-
-
-
-	/*
-	private void DoNextGenerationStep (List<MazeCell> activeCells) {
-		int currentIndex = activeCells.Count - 1;
-		MazeCell currentCell = activeCells[currentIndex];
-		if (currentCell.IsFullyInitialized) {
-			activeCells.RemoveAt(currentIndex);
-			return;
-		}
-		MazeDirection direction = currentCell.RandomUninitializedDirection;
-		IntVector2 coordinates = currentCell.coordinates + direction.ToIntVector2();
-		if (ContainsCoordinates(coordinates)) {
-			MazeCell neighbor = GetCell(coordinates);
-			if (neighbor == null) {
-				neighbor = CreateCell(coordinates);
-				CreatePassage(currentCell, neighbor, direction);
-				activeCells.Add(neighbor);
-			}
-			else if (currentCell.room == neighbor.room) { //expanding rooms (removing maze walls)
-				CreatePassageInSameRoom(currentCell, neighbor, direction);
-			}
-			else {
-				CreateWall(currentCell, neighbor, direction);
-			}
-		}
-		else {
-			CreateWall(currentCell, null, direction);
-		}
-	}*/
-
 	private MazeCell CreateCell (IntVector2 coordinates) {
 		MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
 		cells[coordinates.x, coordinates.z] = newCell;
