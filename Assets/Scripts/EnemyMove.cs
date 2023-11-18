@@ -35,12 +35,27 @@ public class enemymove : MonoBehaviour
             LookAtPlayer();
 
         }
+        
+        //fixing the enemy floating:
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            // Assuming the maze's floor is at y = 0
+            float groundHeight = hit.point.y;
+            Vector3 currentPosition = transform.position;
+            currentPosition.y = groundHeight;
+            transform.position = currentPosition;
+        }
     }
     private void LookAtPlayer()
     {
-        Vector3 direction = player.position - transform.position;
-        direction.y = 0; // Keep the zombie upright, ignore vertical difference
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5.0f); // Smooth rotation
+        if (player != null)
+        {
+            Vector3 direction = player.position - transform.position;
+            direction.y = 0; // Keep the zombie upright, ignore vertical difference
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5.0f); // Smooth rotation towards the player
+        }
     }
+
 }
