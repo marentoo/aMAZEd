@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f489487ab599f45b181d62c31aa46aa7, type: 3}
   - {fileID: 11400000, guid: d61d85f53c9da4244986893237736493, type: 3}
   - {fileID: 11400000, guid: 057b7e231030049f9a3f3e033926ab42, type: 3}
+  - {fileID: 11400000, guid: c602f0865d829274b930e80c6b98a8a0, type: 3}
   roomSettings:
   - floorMaterial: {fileID: 2100000, guid: ac77e6e230dd5774d91e5a610515591d, type: 2}
     wallMaterial: {fileID: 2100000, guid: c18d9fcdbbe1b8a4899b4c28b099779d, type: 2}
@@ -66,4 +67,4 @@ MonoBehaviour:
     wallMaterial: {fileID: 2100000, guid: 18b63f50e1eed41e28e31bbc33b5b467, type: 2}
   - floorMaterial: {fileID: 2100000, guid: 1ab50c00f5e744989a090ed703902070, type: 2}
     wallMaterial: {fileID: 2100000, guid: 04a41fca2fffc4d48803bab4f7af8d2c, type: 2}
-  roomExpansionChance: 0.517
+  roomExpansionChance: 0.352

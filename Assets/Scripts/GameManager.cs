@@ -28,7 +28,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) { RestartGame(); }
+        if (Input.GetKeyDown(KeyCode.Space)) { 
+            RestartGame(); 
+        }
+
+        if (Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Return)) {
+            //mazeInstance.ToggleDoorsInRoom(false); // Close all doors in the current room
+        }
     }
 
     //[SerializeField]

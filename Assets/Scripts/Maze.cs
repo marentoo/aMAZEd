@@ -120,7 +120,7 @@ public class Maze : MonoBehaviour {
 		newCell.transform.localPosition = new Vector3(coordinates.x - size.x * 0.5f + 0.5f, 0f, coordinates.z - size.z * 0.5f + 0.5f);
 		return newCell;
 	}
-
+	/*
 	private void CreatePassage (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
 		MazePassage prefab = Random.value < doorProbability ? doorPrefab : passagePrefab;
 		MazePassage passage = Instantiate(prefab) as MazePassage;
@@ -134,6 +134,26 @@ public class Maze : MonoBehaviour {
 		}
 		passage.Initialize(otherCell, cell, direction.GetOpposite());
 	}
+	*/
+	
+	private List<MazeDoor> doorsInRoom = new List<MazeDoor>(); // Track doors in the current room
+	
+	private void CreatePassage (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
+        MazePassage prefab = Random.value < doorProbability ? doorPrefab : passagePrefab;
+        MazePassage passage = Instantiate(prefab) as MazePassage;
+        passage.Initialize(cell, otherCell, direction);
+        passage = Instantiate(prefab) as MazePassage;
+        if (passage is MazeDoor) {
+            otherCell.Initialize(CreateRoom(cell.room.settingsIndex));
+            doorsInRoom.Add(passage as MazeDoor); // Add door to the list
+        }
+        else {
+            otherCell.Initialize(cell.room);
+        }
+        passage.Initialize(otherCell, cell, direction.GetOpposite());
+    }
+
+
 
 	private void CreateWall (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
 		MazeWall wall = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)]) as MazeWall;
