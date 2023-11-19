@@ -241,7 +241,7 @@ public class Player : MonoBehaviour
 
         
         float distanceToTarget = Vector3.Distance(transform.localPosition, targetPosition);
-        Debug.Log($"Distance to target: {distanceToTarget}");
+        //Debug.Log($"Distance to target: {distanceToTarget}");
 
         if (distanceToTarget <= moveThreshold)
         {
@@ -281,7 +281,7 @@ public class Player : MonoBehaviour
     }
 
     private List<Key> keysCollected = new List<Key>(); // Inventory of keys
-    public HUDManager hudManager; // Reference to the HUDManager
+    public Canvas hudManager; // Reference to the HUDManager
 
     // This method is called when a key is picked up
      public void AddKey(Key key)

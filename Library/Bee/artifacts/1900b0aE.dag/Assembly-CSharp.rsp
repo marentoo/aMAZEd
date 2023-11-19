@@ -386,6 +386,7 @@
 "Assets/Scripts/MazeWall.cs"
 "Assets/Scripts/PauseMenu.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/PlayerHealth.cs"
 "Assets/Scripts/Zombie.cs"
 -langversion:9.0
 

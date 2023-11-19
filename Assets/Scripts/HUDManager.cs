@@ -1,14 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Required for TextMeshPro elements
 
 public class HUDManager : MonoBehaviour
 {
-    public TextMeshProUGUI keyCountText; // Assign this in the inspector
+    public Slider healthSlider; // Reference to the UI slider for health.
 
-    public void UpdateKeyDisplay(int keyCount)
+    // This method updates the health slider's value.
+    public void SetHealth(float health)
     {
-        keyCountText.text = "Keys: " + keyCount.ToString(); // Update the TextMeshPro component
+        if(healthSlider != null)
+        {
+            Debug.Log("Updating health slider value to: " + health);
+            healthSlider.value = health;
+        }
+        else
+        {
+            Debug.LogError("Health slider reference not set in the HUD Manager.");
+        }
     }
-}
 
+    // Call this method when the player's health changes.
+    public void OnHealthChanged(float currentHealth)
+    {
+        SetHealth(currentHealth);
+    }
+
+    // Additional methods to manage other HUD elements...
+}

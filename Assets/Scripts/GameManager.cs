@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
     private MazeNavMeshBuilder nmBuilder;
 
     private void Awake(){
-
         nmBuilder = GetComponent<MazeNavMeshBuilder>();
     }
 
@@ -57,6 +56,7 @@ public class GameManager : MonoBehaviour
         // Instantiate the player and set location.
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
+        //handle baking of navMesh
         nmBuilder.BuildNavMesh();
 
         // Instantiate the zombies and keys
