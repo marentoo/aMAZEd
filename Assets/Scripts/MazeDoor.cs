@@ -44,5 +44,15 @@ public class MazeDoor : MazePassage {
 		OtherSideOfDoor.cell.room.Hide(); //for hiding rooms
 	}
 
+	public bool isOpen;
+
+
+    // Call this method to open or close the door
+    public void SetOpen(bool open)
+    {
+        isOpen = open;
+       
+    }
+
 	
 }

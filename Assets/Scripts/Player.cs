@@ -57,11 +57,8 @@ public class Player : MonoBehaviour
 }
 */
 
-
-
-
-
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -244,7 +241,7 @@ public class Player : MonoBehaviour
 
         
         float distanceToTarget = Vector3.Distance(transform.localPosition, targetPosition);
-        Debug.Log($"Distance to target: {distanceToTarget}");
+        //Debug.Log($"Distance to target: {distanceToTarget}");
 
         if (distanceToTarget <= moveThreshold)
         {
@@ -281,5 +278,15 @@ public class Player : MonoBehaviour
         {
             Look(currentDirection.GetNextClockwise());
         }
+    }
+
+    private List<Key> keysCollected = new List<Key>(); // Inventory of keys
+    public Canvas hudManager; // Reference to the HUDManager
+
+    // This method is called when a key is picked up
+     public void AddKey(Key key)
+    {
+        keysCollected.Add(key);
+        //hudManager.UpdateKeyDisplay(keysCollected.Count); // Update the HUD
     }
 }
