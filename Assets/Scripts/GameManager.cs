@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public Player playerPrefab;
     private Player playerInstance;
 
+    private Zombie zombieInstance;
+
     public Zombie zombiePrefab;
     public int numberOfZombies = 5;
     
@@ -26,10 +28,20 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RestartGame();
+        if (Input.GetKeyDown(KeyCode.Space)) { 
+            RestartGame(); 
         }
+
+        if (Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Return)) {
+            //mazeInstance.ToggleDoorsInRoom(false); // Close all doors in the current room
+        }
+    }
+
+    //[SerializeField]
+    private MazeNavMeshBuilder nmBuilder;
+
+    private void Awake(){
+        nmBuilder = GetComponent<MazeNavMeshBuilder>();
     }
 
     private IEnumerator BeginGame()
@@ -44,17 +56,8 @@ public class GameManager : MonoBehaviour
         // Instantiate the player and set location.
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
-
-        ////NavMash handling
-        //var navMeshSurface = mazeInstance.GetComponent<NavMeshSurface>();
-        //if (navMeshSurface == null)
-        //{
-        //    navMeshSurface = mazeInstance.gameObject.AddComponent<NavMeshSurface>();
-        //}
-
-        //navMeshSurface.collectObjects = CollectObjects.Children;
-        //navMeshSurface.layerMask = LayerMask.GetMask("Walkable");
-        //navMeshSurface.BuildNavMesh();
+        //handle baking of navMesh
+        nmBuilder.BuildNavMesh();
 
         // Instantiate the zombies and keys
         SpawnZombies(numberOfZombies);
@@ -74,23 +77,38 @@ public class GameManager : MonoBehaviour
         Camera.main.rect = new Rect(0f, 0f, 0.3f, 0.5f);
     }
 
+    // Adjustments for spawning and door handling
+    public float minSpawnDistanceFromPlayer = 10f; // Minimum distance from the player to spawn zombies
+    //public Door[] doors; // Array to hold all door references in the maze
 
     private void SpawnZombies(int count)
     {
+
         for (int i = 0; i < count; i++)
         {
-            Zombie zombieInstance = Instantiate(zombiePrefab) as Zombie;
-            zombieInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
+            MazeCell cell = null;
+            float distance;
+            do
+            {
+                cell = mazeInstance.GetCell(mazeInstance.RandomCoordinates);
+                distance = Vector3.Distance(playerInstance.transform.position, cell.transform.position);
+            }
+            while (distance < minSpawnDistanceFromPlayer); // Keep looking for a cell that is far enough from the player
+
+            zombieInstance = Instantiate(zombiePrefab) as Zombie;
+            zombieInstance.SetLocation(cell);
             zombieInstance.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f); // Adjust these values as needed
         }
     }
+
+
     private void SpawnKeys(int count)
     {
         for (int i = 0; i < count; i++)
         {
             MazeCell randomCell = mazeInstance.GetCell(mazeInstance.RandomCoordinates);
             Vector3 keyPosition = randomCell.transform.position;
-            float floatHeight = 0.1f; // The height above the ground at which the key will float
+            float floatHeight = 0.04f; // The height above the ground at which the key will float
             keyPosition.y += floatHeight;
 
             GameObject key = Instantiate(keyPrefab, keyPosition, Quaternion.identity);
@@ -106,7 +124,7 @@ public class GameManager : MonoBehaviour
         if (playerInstance != null)
         {
             Destroy(playerInstance.gameObject);
-            //Destroy(zombieInstance.gameObject);
+            Destroy(zombieInstance.gameObject);
         }
         StartCoroutine(BeginGame());
     }

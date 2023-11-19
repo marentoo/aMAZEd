@@ -6,7 +6,7 @@ public class Key : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.GetComponent<Player>().AddKey();
+            other.GetComponent<Player>().AddKey(this);
 
             Destroy(gameObject);
         }
