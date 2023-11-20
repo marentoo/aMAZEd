@@ -4,25 +4,28 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
-    public Slider healthSlider;
     private float currentHealth;
-    public HUDManager hudManager;
+    private HUDManager hudManager;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        //healthSlider.maxValue = maxHealth;
-        //healthSlider.value = currentHealth;
+
+        // Find the HUDManager in the scene
+        hudManager = FindObjectOfType<HUDManager>();
+        if (hudManager == null)
+        {
+            Debug.LogError("HUDManager not found in the scene!");
+            return;
+        }
+
+        // Initialize the health UI with the starting health
         hudManager.SetHealth(currentHealth);
     }
-
-
-    
 
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        //healthSlider.value = currentHealth;
 
         Debug.Log($"PlayerHealth: {currentHealth}");
         hudManager.OnHealthChanged(currentHealth);

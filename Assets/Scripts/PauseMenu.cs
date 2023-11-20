@@ -28,19 +28,13 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
     }
 
-    //public void ResumeGame()
-    //{
-    //    Time.timeScale = 1f;
-    //    pauseMenuUI.SetActive(false);
-    //    isPaused = false;
-    //}
     public void ResumeGame()
     {
         Debug.Log("ResumeGame function called."); // This line will confirm the function is invoked
         Time.timeScale = 1f;
         pauseMenuUI.SetActive(false);
         isPaused = false;
-        EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(null);
 
     }
 
