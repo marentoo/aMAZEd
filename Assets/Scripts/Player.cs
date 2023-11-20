@@ -1,62 +1,3 @@
-/*
-using UnityEngine;
-
-[RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour
-{
-    private Rigidbody rb;
-    public float moveSpeed = 5f;
-    public float rotationSpeed = 5f;
-
-    private MazeCell currentCell;
-
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor for mouse look
-        rb = GetComponent<Rigidbody>();
-        
-        // Lock the Rigidbody's Y-axis
-        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-    }
-
-    private void FixedUpdate()
-    {
-        MovePlayer();
-        RotatePlayer();
-    }
-
-    private void MovePlayer()
-    {
-        float horizontal = Input.GetAxis("Horizontal"); // A and D / left and right arrow keys
-        float vertical = Input.GetAxis("Vertical"); // W and S / up and down arrow keys
-
-        Vector3 moveDirection = (transform.forward * vertical + transform.right * horizontal).normalized;
-        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
-    }
-
-    private void RotatePlayer()
-    {
-        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-        // Apply rotation around the Y axis (Yaw)
-        Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, mouseX, 0) * Time.fixedDeltaTime);
-        rb.MoveRotation(rb.rotation * deltaRotation);
-    }
-    
-
-    public void SetLocation(MazeCell cell)
-    {
-        if (currentCell != null)
-        {
-            currentCell.OnPlayerExited();
-        }
-        currentCell = cell;
-        currentCell.OnPlayerEntered();
-    }
-    
-   
-}
-*/
-
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -76,7 +17,8 @@ public class Player : MonoBehaviour
     private bool isRotating;
 
     private float moveThreshold = 0.1f;
-    private int keyCount = 0;
+    public int keysCollected = 0;
+    private HUDManager hudManager;
 
 
     private void Move(MazeDirection direction)
@@ -149,7 +91,7 @@ public class Player : MonoBehaviour
             transform.Rotate(0f, mouseX * rotationSpeed * Time.deltaTime, 0f);
             UpdateCurrentDirection();
         }
-        if (Mathf.Abs(mouseY)> 0)
+        if (Mathf.Abs(mouseY) > 0)
         {
             transform.Rotate(0f, mouseX * rotationSpeed * Time.deltaTime, 0f);
             UpdateCurrentDirection();
@@ -226,10 +168,6 @@ public class Player : MonoBehaviour
             isMoving = true; // Now we're ready to move towards the target.
         }
     }
-    public void AddKey()
-    {
-        keyCount++;
-    }
 
     private void MoveTowardsTargetSmooth()
     {
@@ -239,7 +177,7 @@ public class Player : MonoBehaviour
         }
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
-        
+
         float distanceToTarget = Vector3.Distance(transform.localPosition, targetPosition);
         //Debug.Log($"Distance to target: {distanceToTarget}");
 
@@ -249,8 +187,6 @@ public class Player : MonoBehaviour
             isMoving = false;
         }
     }
-
-
 
     private void CheckInput()
     {
@@ -280,13 +216,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    private List<Key> keysCollected = new List<Key>(); // Inventory of keys
-    public Canvas hudManager; // Reference to the HUDManager
-
     // This method is called when a key is picked up
-     public void AddKey(Key key)
+    //private List<Key> keysCollected = new List<Key>(); // Inventory of keys
+    public void AddKey(Key key)
     {
-        keysCollected.Add(key);
-        //hudManager.UpdateKeyDisplay(keysCollected.Count); // Update the HUD
+        hudManager = FindObjectOfType<HUDManager>();
+        keysCollected++;
+        hudManager.UpdateKeyDisplay();
+
     }
 }

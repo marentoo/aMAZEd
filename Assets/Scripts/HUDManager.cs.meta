@@ -3,8 +3,11 @@ guid: df92d19fa5e178247905267945e397c1
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
-  executionOrder: -50
+  defaultReferences:
+  - healthSlider: {instanceID: 0}
+  - keyCountText: {instanceID: 0}
+  - player: {instanceID: 0}
+  executionOrder: 20
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

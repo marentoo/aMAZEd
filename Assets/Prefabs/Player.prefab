@@ -341,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84abe2045f323048a6ea466db2e12ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hudManager: {fileID: 0}
+  keysCollected: 0
 --- !u!136 &5033447368387719216
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -405,5 +405,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  healthSlider: {fileID: 334194749298460158, guid: c334cc93bee812d4aa47bbe72f440463, type: 3}
-  hudManager: {fileID: 2385858261115021887, guid: 3f22f5462918c4b479db6bc96eb427f2, type: 3}
+  hudManager: {fileID: 0}

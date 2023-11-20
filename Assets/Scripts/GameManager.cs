@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
 
     public Zombie zombiePrefab;
     public int numberOfZombies = 5;
-    
+
     public GameObject keyPrefab;
-    public int numberOfKeys = 3;
+    public static int numberOfKeys = 3;
 
     private void Start()
     {
@@ -28,11 +28,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) { 
-            RestartGame(); 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            RestartGame();
         }
 
-        if (Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Return)) {
+        if (Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Return))
+        {
             //mazeInstance.ToggleDoorsInRoom(false); // Close all doors in the current room
         }
     }
@@ -40,7 +42,8 @@ public class GameManager : MonoBehaviour
     //[SerializeField]
     private MazeNavMeshBuilder nmBuilder;
 
-    private void Awake(){
+    private void Awake()
+    {
         nmBuilder = GetComponent<MazeNavMeshBuilder>();
     }
 
