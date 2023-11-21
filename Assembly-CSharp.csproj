@@ -53,46 +53,48 @@
     <UnityVersion>2022.3.10f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.10f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.10f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Enemies\ZombieFast.cs" />
     <Compile Include="Assets\Keypad\Scripts\SlidingDoor.cs" />
     <Compile Include="Assets\Scripts\MazePassage.cs" />
     <Compile Include="Assets\Scripts\MazeDirection.cs" />
-    <Compile Include="Assets\Enemies\Tensori\SkinlessZombie\Demo Scripts\AnimationController.cs" />
     <Compile Include="Assets\Pause Menu Assets\Scripts\Pausemenu\PauseManager.cs" />
-    <Compile Include="Assets\Enemies\Tensori\SkinlessZombie\Demo Scripts\CameraController.cs" />
     <Compile Include="Assets\Keypad\Scripts\KeypadButton.cs" />
     <Compile Include="Assets\Scripts\Maze.cs" />
-    <Compile Include="Assets\Enemies\Tensori\SkinlessZombie\Demo Scripts\UIElementController.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyMove.cs" />
     <Compile Include="Assets\Scripts\MazeRoom.cs" />
     <Compile Include="Assets\Scripts\Key.cs" />
-    <Compile Include="Assets\Enemies\Tensori\SkinlessZombie\Demo Scripts\AnimationItemData.cs" />
     <Compile Include="Assets\Scripts\MazeNavMeshBuilder.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyFastMove.cs" />
+    <Compile Include="Assets\Prefabs\Enemies\Tensori\SkinlessZombie\Demo Scripts\AnimationItemData.cs" />
     <Compile Include="Assets\Pause Menu Assets\Scripts\Pausemenu\SaveSettings.cs" />
     <Compile Include="Assets\Scripts\MazeWall.cs" />
+    <Compile Include="Assets\Prefabs\Enemies\Tensori\SkinlessZombie\Demo Scripts\UIElementController.cs" />
     <Compile Include="Assets\Keypad\Scripts\Keypad.cs" />
     <Compile Include="Assets\Keypad\Scripts\KeypadInteractionFPV.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Prefabs\Enemies\Tensori\SkinlessZombie\Demo Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Piloto Studio\Readme\Scripts\ReadmeBehaviour.cs" />
     <Compile Include="Assets\Pause Menu Assets\Scripts\Utlities\Rotate.cs" />
     <Compile Include="Assets\Pause Menu Assets\Scripts\Utlities\CoroutineUtlities.cs" />
     <Compile Include="Assets\Scripts\MazeDoor.cs" />
-    <Compile Include="Assets\Scripts\Zombie.cs" />
     <Compile Include="Assets\Scripts\PauseMenu.cs" />
-    <Compile Include="Assets\Scripts\EnemyMove.cs" />
     <Compile Include="Assets\Scripts\HUDManager.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
-    <Compile Include="Assets\Scripts\MazeRoomSettings.cs" />
+    <Compile Include="Assets\Piloto Studio\Readme\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Zombie.cs" />
     <Compile Include="Assets\Scripts\MazeCell.cs" />
+    <Compile Include="Assets\Prefabs\Enemies\Tensori\SkinlessZombie\Demo Scripts\AnimationController.cs" />
     <Compile Include="Assets\Scripts\IntVector2.cs" />
     <Compile Include="Assets\Scripts\MazeCellEdge.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Enemies\Zombie\Materials\Standard_Two_Sided .shader" />
+    <None Include="Assets\Prefabs\Enemies\Zombie\Materials\Standard_Two_Sided .shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

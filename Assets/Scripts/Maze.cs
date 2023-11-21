@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//[System.Serializable]
 public class Maze : MonoBehaviour {
 
-	public IntVector2 size;
+	public IntVector2 size; // This holds the dimensions of the maze
 
 	public MazeCell cellPrefab;
 
@@ -38,6 +39,12 @@ public class Maze : MonoBehaviour {
 	public MazeCell GetCell (IntVector2 coordinates) {
 		return cells[coordinates.x, coordinates.z];
 	}
+
+	//new
+	public MazeCell GetCornerCell(IntVector2 coordinates) {
+		return cells[coordinates.x, coordinates.z];
+	}
+
 	
 	public IEnumerator Generate () {
 		WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
@@ -49,9 +56,10 @@ public class Maze : MonoBehaviour {
 			DoNextGenerationStep(activeCells);
 		}
 		//for hiding rooms
+		/*
 		for (int i = 0; i < rooms.Count; i++) {
 			rooms[i].Hide();
-		}
+		}*/
 		
 	}
 	
@@ -72,44 +80,56 @@ public class Maze : MonoBehaviour {
 	[Range(0f, 1f)]
 	public float roomExpansionChance;	// Chance to expand the room by removing walls between cells
 
-
+	/**/
 	private void DoNextGenerationStep(List<MazeCell> activeCells) {
-    int currentIndex = activeCells.Count - 1;
-    MazeCell currentCell = activeCells[currentIndex];
-    if (currentCell.IsFullyInitialized) {
-        activeCells.RemoveAt(currentIndex);
-        return;
-    }
-    MazeDirection direction = currentCell.RandomUninitializedDirection;
-    IntVector2 coordinates = currentCell.coordinates + direction.ToIntVector2();
-    if (ContainsCoordinates(coordinates)) {
-        MazeCell neighbor = GetCell(coordinates);
-        if (neighbor == null) {
-            neighbor = CreateCell(coordinates);
-            // Create a passage with a random chance of expanding the room.
-            if (Random.value < roomExpansionChance) { // roomExpansionChance determines how often rooms are expanded.
-                CreatePassageInSameRoom(currentCell, neighbor, direction);
-                neighbor.Initialize(currentCell.room); // Initialize with the current room
-            } else {
-                CreatePassage(currentCell, neighbor, direction);
-            }
-            activeCells.Add(neighbor);
-        } else {
-            if (currentCell.room == neighbor.room) {
-                // Random chance to expand the room instead of creating a wall.
-                if (Random.value < roomExpansionChance) {
-                    CreatePassageInSameRoom(currentCell, neighbor, direction);
-                } else {
-                    CreateWall(currentCell, neighbor, direction);
-                }
-            } else {
-                CreateWall(currentCell, neighbor, direction);
-            }
-        }
-    } else {
-        CreateWall(currentCell, null, direction);
-    }
-}
+		int currentIndex = activeCells.Count - 1;
+		MazeCell currentCell = activeCells[currentIndex];
+		if (currentCell.IsFullyInitialized) {
+			activeCells.RemoveAt(currentIndex);
+			return;
+		}
+		MazeDirection direction = currentCell.RandomUninitializedDirection;
+		IntVector2 coordinates = currentCell.coordinates + direction.ToIntVector2();
+		if (ContainsCoordinates(coordinates)) {
+			MazeCell neighbor = GetCell(coordinates);
+			if (neighbor == null) {
+				neighbor = CreateCell(coordinates);
+				// Create a passage with a random chance of expanding the room.
+				if (Random.value < roomExpansionChance) { // roomExpansionChance determines how often rooms are expanded.
+					CreatePassageInSameRoom(currentCell, neighbor, direction);
+					neighbor.Initialize(currentCell.room); // Initialize with the current room
+				} else {
+					CreatePassage(currentCell, neighbor, direction);
+				}
+				activeCells.Add(neighbor);
+			} else {
+				if (currentCell.room == neighbor.room) {
+					// Random chance to expand the room instead of creating a wall.
+					if (Random.value < roomExpansionChance) {
+						CreatePassageInSameRoom(currentCell, neighbor, direction);
+					} else {
+						CreateWall(currentCell, neighbor, direction);
+					}
+				} else {
+					CreateWall(currentCell, neighbor, direction);
+				}
+			}
+		} else {
+			CreateWall(currentCell, null, direction);
+		}
+	}
+
+	public void RemoveWallsAtCoordinates(params IntVector2[] coordinatesArray) {
+		foreach (IntVector2 coordinates in coordinatesArray) {
+			MazeCell cell = GetCell(coordinates);
+			if (cell != null) {
+				// Assuming each cell has a method to remove walls or an array/list of walls
+				cell.RemoveWalls();
+			}
+		}
+	}
+
+
 
 	private MazeCell CreateCell (IntVector2 coordinates) {
 		MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
@@ -175,3 +195,4 @@ public class Maze : MonoBehaviour {
 		return newRoom;
 	}
 }
+

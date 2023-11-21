@@ -46,25 +46,37 @@ public class MazeCell : MonoBehaviour {
 	}
 
 	public void OnPlayerEntered () {
-		room.Show();		//for hiding rooms
+		//room.Show();		//for hiding rooms
 		for (int i = 0; i < edges.Length; i++) {
 			edges[i].OnPlayerEntered();
 		}
 	}
 	
 	public void OnPlayerExited () {
-		room.Hide();		//for hiding rooms
+		//room.Hide();		//for hiding rooms
 		for (int i = 0; i < edges.Length; i++) {
 			edges[i].OnPlayerExited();
 		}
 	}
 
 	//for hiding rooms
+	/*
 	public void Show () {
 		gameObject.SetActive(true);
 	}
 
 	public void Hide () {
 		gameObject.SetActive(false);
+	}*/
+
+	public void RemoveWalls() {
+		foreach (var edge in edges) { // Assuming 'edges' is a collection of all cell edges
+			if (edge is MazeWall) {
+				// Optionally, check the direction of the wall if needed
+				if (edge.direction == MazeDirection.South) {  
+					Destroy(edge.gameObject);
+				}
+			}
+		}
 	}
 }
