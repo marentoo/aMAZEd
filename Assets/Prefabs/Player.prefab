@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3539206095325609231}
   serializedVersion: 2
   m_LocalRotation: {x: 0.095845714, y: 0, z: 0, w: 0.99539626}
-  m_LocalPosition: {x: -0.091, y: 0.804, z: 0.046}
+  m_LocalPosition: {x: -0.091, y: 0.69, z: 0.024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: -8370215541010456753}
   - component: {fileID: 5033447368387719216}
   - component: {fileID: 3712370904903941988}
-  - component: {fileID: -8854451694336560356}
+  - component: {fileID: -489533274436374410}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -345,10 +345,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keysCollected: 0
-  mouseSensitivity: 96.6
-  verticalMouseSensitivity: 2
-  maxSpeed: 3
-  speed: 1.5
 --- !u!136 &5033447368387719216
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -397,9 +393,9 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &-8854451694336560356
+--- !u!114 &-489533274436374410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -412,8 +408,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  healthSlider: {fileID: 334194749298460158, guid: c334cc93bee812d4aa47bbe72f440463, type: 3}
-  hudManager: {fileID: 2385858261115021887, guid: 3f22f5462918c4b479db6bc96eb427f2, type: 3}
 --- !u!1001 &6110745774596899425
 PrefabInstance:
   m_ObjectHideFlags: 0

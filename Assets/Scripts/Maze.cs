@@ -128,6 +128,15 @@ public class Maze : MonoBehaviour {
 			}
 		}
 	}
+	public void RemoveWallsAtCoordinates1(params IntVector2[] coordinatesArray) {
+		foreach (IntVector2 coordinates in coordinatesArray) {
+			MazeCell cell = GetCell(coordinates);
+			if (cell != null) {
+				// Assuming each cell has a method to remove walls or an array/list of walls
+				cell.RemoveWalls1();
+			}
+		}
+	}
 
 
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class Key : MonoBehaviour
-{
+{/*
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -13,9 +13,9 @@ public class Key : MonoBehaviour
                 Destroy(gameObject); // Destroys the key GameObject
             }
         }
-    }
+    }*/
 
-    /*
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -24,5 +24,5 @@ public class Key : MonoBehaviour
 
             Destroy(gameObject);
         }
-    }*/
+    }
 }

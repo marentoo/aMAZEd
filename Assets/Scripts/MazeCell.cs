@@ -79,4 +79,15 @@ public class MazeCell : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void RemoveWalls1() {
+		foreach (var edge in edges) { // Assuming 'edges' is a collection of all cell edges
+			if (edge is MazeWall) {
+				// Optionally, check the direction of the wall if needed
+				if (edge.direction == MazeDirection.North) {  
+					Destroy(edge.gameObject);
+				}
+			}
+		}
+	}
 }

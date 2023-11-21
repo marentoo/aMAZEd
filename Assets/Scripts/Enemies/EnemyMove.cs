@@ -43,7 +43,7 @@ public class EnemyMove : MonoBehaviour
             {
                 animator.SetTrigger("Attack"); // Trigger the attack animation
                 
-                /*
+                /**/
 
                 // Safely call the TakeDamage method on the player
                 PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
@@ -54,7 +54,7 @@ public class EnemyMove : MonoBehaviour
                 else
                 {
                     Debug.LogError("PlayerHealth component not found on the player!");
-                }*/
+                }
                 
             }
             else

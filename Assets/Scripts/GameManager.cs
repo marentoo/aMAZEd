@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public Maze mazePrefab;
     private Maze mazeInstance;
 
+    public MazeCell cellPrefab;
+    //public LiftRoom LiftPrefab;
+
     //new
     public GameObject entryRoomPrefab;
     public GameObject exitRoomPrefab;
@@ -63,14 +66,28 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(mazeInstance.Generate());
         PlaceEntryAndExitRooms();
         mazeInstance.RemoveWallsAtCoordinates(new IntVector2(0, 0), new IntVector2(1, 0), new IntVector2(2, 0));
+        mazeInstance.RemoveWallsAtCoordinates1(new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 1, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 3, mazeInstance.size.z - 1));
 
+        //MazeRoom liftRoomInstance = Instantiate(liftRoomPrefab) as MazeRoom;
+        //liftRoomInstance.transform.position = CalculateLiftRoomPosition();
+        //ConnectLiftRoomToMaze(liftRoomInstance);
 
         // Instantiate the player and set location.
-        //playerInstance = Instantiate(playerPrefab) as Player;
-        //playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
+        playerInstance = Instantiate(playerPrefab) as Player;
+        playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
         // Assuming playerPrefab is your player GameObject prefab
-        Vector3 spawnPosition = new Vector3(-3.4f, 0, -7.4f); // Replace x, y, z with your specific coordinates
-        playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity) as Player;
+        
+        //playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(0, 0)));
+        //Vector3 spawnPosition = new Vector3(-3.4f, 0, -7.4f); // Replace x, y, z with your specific coordinates
+        //playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity) as Player;
+        
+        // Create an out-of-bound cell
+        //MazeCell outofBoundCell = CreateOutofBoundCell(new IntVector2(-1, -1)); // Use appropriate coordinates
+
+        // Instantiate the player and set location to the out-of-bound cell
+        //playerInstance = Instantiate(playerPrefab) as Player;
+        //playerInstance.SetLocation(outofBoundCell);
+
         /*
         // Assuming playerPrefab is your player GameObject prefab
         if (playerSpawnPoint != null) {
@@ -105,6 +122,30 @@ public class GameManager : MonoBehaviour
 
         Camera.main.clearFlags = CameraClearFlags.Depth;
         Camera.main.rect = new Rect(0f, 0f, 0.3f, 0.5f);
+    }
+
+    /*
+    private MazeCell CreateOutofBoundCell(IntVector2 coordinates) {
+        MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
+        newCell.coordinates = coordinates;
+        newCell.name = "Out of Bound Cell " + coordinates.x + ", " + coordinates.z;
+        newCell.transform.parent = transform;
+        // Position the cell outside of the maze boundaries
+        newCell.transform.localPosition = new Vector3(coordinates.x, 0f, coordinates.z);
+        return newCell;
+    }*/
+
+    private Vector3 CalculateLiftRoomPosition()
+    {
+        // Calculate where the lift room should be instantiated
+        // This is just an example and would need to be adjusted based on your game's logic
+        return new Vector3(mazeInstance.size.x, 0, mazeInstance.size.z);
+    }
+
+    private void ConnectLiftRoomToMaze(MazeRoom liftRoomInstance)
+    {
+        // Create passages or doors that connect the lift room to the maze
+        // This method will need to be customized based on how you want to connect the rooms
     }
 
 

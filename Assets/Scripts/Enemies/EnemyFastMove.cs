@@ -43,12 +43,12 @@ public class EnemyFastMove : MonoBehaviour
             if (Vector3.Distance(transform.position, player.position) <= fastAttackRange)
             {
                 animator.SetTrigger("Attack"); // Assume you have a different attack animation called "FastAttack"
-                /*
+                /**/
                 PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(attackDamage);
-                }*/
+                }
             }
             else
             {
