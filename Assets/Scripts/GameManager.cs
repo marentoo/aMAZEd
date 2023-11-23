@@ -76,31 +76,6 @@ public class GameManager : MonoBehaviour
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
         // Assuming playerPrefab is your player GameObject prefab
-        
-        //playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(0, 0)));
-        //Vector3 spawnPosition = new Vector3(-3.4f, 0, -7.4f); // Replace x, y, z with your specific coordinates
-        //playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity) as Player;
-        
-        // Create an out-of-bound cell
-        //MazeCell outofBoundCell = CreateOutofBoundCell(new IntVector2(-1, -1)); // Use appropriate coordinates
-
-        // Instantiate the player and set location to the out-of-bound cell
-        //playerInstance = Instantiate(playerPrefab) as Player;
-        //playerInstance.SetLocation(outofBoundCell);
-
-        /*
-        // Assuming playerPrefab is your player GameObject prefab
-        if (playerSpawnPoint != null) {
-            playerInstance = Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation) as Player;
-        } else {
-            Debug.LogError("Player spawn point not set!");
-        }*/
-
-        //playerInstance.SetLocation(mazeInstance.GetCell(mazeInstance.RandomCoordinates));
-        //playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(0, 0)));
-
-        //one door at (mazeInstance.size.x - 2, mazeInstance.size.z - 1)
-        //second at (1,0)
 
         //handle baking of navMesh
         nmBuilder.BuildNavMesh();

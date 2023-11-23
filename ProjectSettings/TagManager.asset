@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Zombie
+  - TourchSpot
+  - Scavenger
   layers:
   - Default
   - TransparentFX

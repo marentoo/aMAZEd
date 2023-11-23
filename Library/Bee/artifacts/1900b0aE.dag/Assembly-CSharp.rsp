@@ -364,12 +364,13 @@
 "Assets/Pause Menu Assets/Scripts/Pausemenu/SaveSettings.cs"
 "Assets/Pause Menu Assets/Scripts/Utlities/CoroutineUtlities.cs"
 "Assets/Pause Menu Assets/Scripts/Utlities/Rotate.cs"
-"Assets/Piloto Studio/Readme/Scripts/Readme.cs"
-"Assets/Piloto Studio/Readme/Scripts/ReadmeBehaviour.cs"
 "Assets/Prefabs/Enemies/Tensori/SkinlessZombie/Demo Scripts/AnimationController.cs"
 "Assets/Prefabs/Enemies/Tensori/SkinlessZombie/Demo Scripts/AnimationItemData.cs"
 "Assets/Prefabs/Enemies/Tensori/SkinlessZombie/Demo Scripts/CameraController.cs"
 "Assets/Prefabs/Enemies/Tensori/SkinlessZombie/Demo Scripts/UIElementController.cs"
+"Assets/Prefabs/Objects/HandTorch/Scripts/FlickLight.cs"
+"Assets/Prefabs/Objects/HandTorch/Scripts/RotateObject.cs"
+"Assets/Prefabs/Objects/HandTorch/Scripts/ToggleLight.cs"
 "Assets/Scripts/CameraFollow.cs"
 "Assets/Scripts/Enemies/EnemyFastMove.cs"
 "Assets/Scripts/Enemies/EnemyMove.cs"
@@ -391,6 +392,7 @@
 "Assets/Scripts/PauseMenu.cs"
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/PlayerHealth.cs"
+"Assets/Scripts/Scavenger.cs"
 -langversion:9.0
 
 /deterministic
