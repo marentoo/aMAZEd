@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
 
+    public int keysCollected = 0;
+    private HUDManager hudManager;
     private MazeCell currentCell;
     private MazeCell targetCell;
     private MazeDirection currentDirection;
@@ -17,9 +19,32 @@ public class Player : MonoBehaviour
     private bool isRotating;
 
     private float moveThreshold = 0.1f;
-    public int keysCollected = 0;
-    private HUDManager hudManager;
+    //private int keyCount = 0;
 
+    private Animator scavengerAnimator;
+
+    private void Start()
+    {
+        // Find the Scavenger Variant child object
+        Transform scavengerVariantTransform = transform.Find("Scavenger Variant");
+        if (scavengerVariantTransform != null)
+        {
+            // Get the Animator component from the Scavenger Variant
+            scavengerAnimator = scavengerVariantTransform.GetComponent<Animator>();
+        }
+
+        scavengerAnimator = GetComponent<Animator>();
+
+        if (scavengerAnimator == null)
+        {
+            Debug.LogError("Animator not found on Scavenger Variant");
+        }
+    }
+
+    private void FixedUpdate()
+    {
+
+    }
 
     private void Move(MazeDirection direction)
     {
@@ -31,12 +56,46 @@ public class Player : MonoBehaviour
         MazeCellEdge edge = currentCell.GetEdge(direction);
         if (edge is MazePassage)
         {
+            //scavengerAnimator.SetTrigger("Walk");
             targetCell = edge.otherCell;
             targetPosition = targetCell.transform.localPosition;
             isMoving = true;
         }
     }
 
+    private void Animate()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            scavengerAnimator.SetTrigger("Walk");
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            scavengerAnimator.SetTrigger("Walk");
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            scavengerAnimator.SetTrigger("Back");
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            scavengerAnimator.SetTrigger("Back");
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)
+                || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            scavengerAnimator.SetTrigger("Walk");
+        }
+
+        else if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.DownArrow)) ||
+                 (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.UpArrow)) ||
+                 (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow)) ||
+                 (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow)))
+        {
+            // Stop walking immediately
+            scavengerAnimator.SetTrigger("StopWalking");
+        }
+    }
 
     private void Look(MazeDirection direction)
     {
@@ -50,21 +109,10 @@ public class Player : MonoBehaviour
         isRotating = true;
     }
 
-    public void SetLocation(MazeCell cell)
-    {
-        if (currentCell != null)
-        {
-            currentCell.OnPlayerExited();
-        }
-        currentCell = cell;
-        transform.localPosition = cell.transform.localPosition;
-        currentCell.OnPlayerEntered();
-        targetCell = null;
-        isMoving = false;
-    }
-
     private void Update()
     {
+        Animate();
+
         if (!isMoving)
         {
             CheckInput();
@@ -81,6 +129,8 @@ public class Player : MonoBehaviour
             RotateTowardsTarget();
         }
     }
+
+
 
     private void CheckMouseRotation()
     {
@@ -157,6 +207,7 @@ public class Player : MonoBehaviour
     {
         if (isMoving)
         {
+            //scavengerAnimator.SetTrigger("Walk");
             return;
         }
 
@@ -167,6 +218,14 @@ public class Player : MonoBehaviour
             targetPosition = targetCell.transform.localPosition;
             isMoving = true; // Now we're ready to move towards the target.
         }
+    }
+
+    public void AddKey(Key key)
+    {
+        hudManager = FindObjectOfType<HUDManager>();
+        keysCollected++;
+        hudManager.UpdateKeyDisplay();
+
     }
 
     private void MoveTowardsTargetSmooth()
@@ -185,8 +244,11 @@ public class Player : MonoBehaviour
         {
             SetLocation(targetCell);
             isMoving = false;
+            //scavengerAnimator.SetTrigger("StopWalking");
         }
     }
+
+
 
     private void CheckInput()
     {
@@ -216,13 +278,32 @@ public class Player : MonoBehaviour
         }
     }
 
-    // This method is called when a key is picked up
-    //private List<Key> keysCollected = new List<Key>(); // Inventory of keys
-    public void AddKey(Key key)
-    {
-        hudManager = FindObjectOfType<HUDManager>();
-        keysCollected++;
-        hudManager.UpdateKeyDisplay();
+    //for doors
+    //private MazeCell currentCell;
 
+    public void SetLocation(MazeCell cell)
+    {
+        if (currentCell != null)
+        {
+            currentCell.OnPlayerExited();
+        }
+        currentCell = cell;
+        transform.localPosition = cell.transform.localPosition;
+        currentCell.OnPlayerEntered();
+    }
+}
+
+public class PlayerSpawn : MonoBehaviour
+{
+    public float groundClearance = 1.0f; // Space between player and ground
+
+    void Start()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            // Place the player slightly above the ground hit point
+            transform.position = new Vector3(transform.position.x, hit.point.y + groundClearance, transform.position.z);
+        }
     }
 }

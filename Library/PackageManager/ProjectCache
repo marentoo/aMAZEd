@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638350663486062553
-    m_Hash: 3465141661
+      ticks: 638365383342457910
+    m_Hash: 1316384038
   m_LockFileStatus:
     m_FilePath: C:/Users/mateg/Desktop/sem3/video game design/aMAZEd/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638350663486153743
-    m_Hash: 2534642707
+      ticks: 638365383342467935
+    m_Hash: 61602667
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:

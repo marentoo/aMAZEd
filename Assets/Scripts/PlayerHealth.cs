@@ -6,6 +6,7 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100;
     private float currentHealth;
     private HUDManager hudManager;
+    //public float CurrentHealth { get { return currentHealth; } }
 
     private void Start()
     {
@@ -19,8 +20,9 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        // Initialize the health UI with the starting health
         hudManager.SetHealth(currentHealth);
+
+
     }
 
     public void TakeDamage(float amount)
@@ -30,10 +32,24 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log($"PlayerHealth: {currentHealth}");
         hudManager.OnHealthChanged(currentHealth);
 
+
         if (currentHealth <= 0)
         {
-            //handle respawn here
-            Debug.LogError($"Game over! PlayerHealth: {currentHealth}");
+            if (DeathScreen.Instance != null)
+            {
+                DeathScreen.Instance.ShowDeathScreen();
+            }
+            else
+            {
+                Debug.LogError("DeathScreen component not assigned.");
+            }
         }
+    }
+
+    public void RestoreHealth(float amount)
+    {
+        currentHealth += amount;
+
+        hudManager.OnHealthChanged(currentHealth);
     }
 }

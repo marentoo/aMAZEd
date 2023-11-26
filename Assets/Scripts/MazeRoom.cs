@@ -15,6 +15,7 @@ public class MazeRoom : ScriptableObject {
 	}
 
 	//for hiding rooms
+	/*
 	public void Hide () {
 		for (int i = 0; i < cells.Count; i++) {
 			cells[i].Hide();
@@ -26,4 +27,12 @@ public class MazeRoom : ScriptableObject {
 			cells[i].Show();
 		}
 	}
+	*/
+}
+
+[System.Serializable]
+public class MazeRoomSettings {
+
+	public Material floorMaterial, wallMaterial;
+	
 }
