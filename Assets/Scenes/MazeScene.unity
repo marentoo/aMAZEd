@@ -1170,8 +1170,8 @@ MonoBehaviour:
   playerPrefab: {fileID: -8370215541010456753, guid: 33ae338541579fe438801041e367ce1a, type: 3}
   zombiePrefab: {fileID: 4485439047857801813, guid: 43b3bfc3c2f2ff146a8d85e63d0a4e26, type: 3}
   zombiefPrefab: {fileID: 6912579952118162297, guid: 06cb2b131fe009c47a523671a8fa9ed8, type: 3}
-  numberOfZombies: 11
-  numberOfFastZombies: 11
+  numberOfZombies: 1
+  numberOfFastZombies: 1
   keyPrefab: {fileID: 374289202576707483, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
   healthPrefab: {fileID: 1781561378815422, guid: 0f6fbf6ba5b56aa4ba01adc51ab77ce6, type: 3}
   storyItemPrefab: {fileID: 1685343955664076, guid: 72653085a6b827f48b10b434c7972f1c, type: 3}
