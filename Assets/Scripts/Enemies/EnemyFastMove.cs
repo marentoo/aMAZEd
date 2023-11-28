@@ -12,7 +12,7 @@ public class EnemyFastMove : MonoBehaviour
     private Transform player;
     private NavMeshAgent agent;
     private Animator animator;
-    
+
     // New properties specific to the FastZombie
     public float fastAttackRange = 0.6f;
     public float fastMovementSpeed = 1.0f;
@@ -70,6 +70,7 @@ public class EnemyFastMove : MonoBehaviour
 
     private void LookAtPlayer()
     {
+
         if (player != null)
         {
             Vector3 direction = player.position - transform.position;
@@ -79,6 +80,3 @@ public class EnemyFastMove : MonoBehaviour
         }
     }
 }
-
-
-

@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Old Sea Port/scenes/Dock Thing.unity
+- path: Assets/Scenes/MazeScene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

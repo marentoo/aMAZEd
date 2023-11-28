@@ -3,12 +3,13 @@ using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine.AI;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
 
     public Maze mazePrefab;
-    private Maze mazeInstance;
+    public Maze mazeInstance;
 
     public MazeCell cellPrefab;
     //public LiftRoom LiftPrefab;
@@ -30,8 +31,12 @@ public class GameManager : MonoBehaviour
     public int numberOfZombies = 5;
     public int numberOfFastZombies = 2;
 
-    public GameObject keyPrefab;
-    public static int numberOfKeys = 20;
+    public GameObject keyPrefab, healthPrefab;
+    public static int numberOfKeys = 3;
+    public static int numberOfHealths = 2;
+
+    public GameObject storyItemPrefab; // Assign your story item prefab in the Inspector
+    public string[] storyFiles; // Array of story file names
 
     private void Start()
     {
@@ -40,7 +45,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space)) { RestartGame(); }
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            SaveGame();
+        }
 
         if (Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Return))
         {
@@ -65,8 +73,10 @@ public class GameManager : MonoBehaviour
         mazeInstance = Instantiate(mazePrefab) as Maze;
         yield return StartCoroutine(mazeInstance.Generate());
         PlaceEntryAndExitRooms();
-        mazeInstance.RemoveWallsAtCoordinates(new IntVector2(0, 0), new IntVector2(1, 0), new IntVector2(2, 0));
-        mazeInstance.RemoveWallsAtCoordinates1(new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 1, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 3, mazeInstance.size.z - 1));
+        //mazeInstance.RemoveWallsAtCoordinates(new IntVector2(0, 0), new IntVector2(1, 0), new IntVector2(2, 0));
+        mazeInstance.RemoveWallsAtCoordinates(new IntVector2(1, 0));
+        //mazeInstance.RemoveWallsAtCoordinates1(new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 1, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 3, mazeInstance.size.z - 1));
+        mazeInstance.RemoveWallsAtCoordinates1( new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1));
 
         //MazeRoom liftRoomInstance = Instantiate(liftRoomPrefab) as MazeRoom;
         //liftRoomInstance.transform.position = CalculateLiftRoomPosition();
@@ -84,6 +94,9 @@ public class GameManager : MonoBehaviour
         SpawnZombies(numberOfZombies);
         SpawnFastZombies(numberOfFastZombies);
         SpawnKeys(numberOfKeys);
+        SpawnHealth(numberOfHealths);
+        SpawnStoryItems(storyFiles.Length);
+
 
         CameraFollow cameraFollowScript = Camera.main.GetComponent<CameraFollow>();
         if (cameraFollowScript != null)
@@ -122,9 +135,58 @@ public class GameManager : MonoBehaviour
         // Create passages or doors that connect the lift room to the maze
         // This method will need to be customized based on how you want to connect the rooms
     }
+    public void SaveGame()
+    {
+        if (playerInstance == null)
+        {
+            Debug.LogError("Player instance is null");
+            return;
+        }
 
 
-    
+        SaveData saveData = new SaveData();
+        saveData.playerPositionX = playerInstance.transform.position.x;
+        saveData.playerPositionY = playerInstance.transform.position.y;
+        saveData.playerPositionZ = playerInstance.transform.position.z;
+
+        Transform cameraTransform = Camera.main.transform;
+        saveData.cameraRotationX = cameraTransform.eulerAngles.x;
+        saveData.cameraRotationY = cameraTransform.eulerAngles.y;
+        saveData.cameraRotationZ = cameraTransform.eulerAngles.z;
+
+        SaveSystem.SaveGame(saveData);
+
+    }
+    public void LoadGame()
+    {
+        SaveData saveData = SaveSystem.LoadGame();
+        if (saveData != null)
+        {
+            if (playerInstance != null)
+            {
+                playerInstance.transform.position = new Vector3(saveData.playerPositionX, saveData.playerPositionY, saveData.playerPositionZ);
+            }
+            else
+            {
+                Debug.LogError("Player instance is null.");
+            }
+
+            // Load other game state elements here, like enemies' positions, collected items, etc.
+        }
+        if (Camera.main != null)
+        {
+            Camera.main.transform.eulerAngles = new Vector3(
+                saveData.cameraRotationX,
+                saveData.cameraRotationY,
+                saveData.cameraRotationZ
+            );
+        }
+        else
+        {
+            Debug.LogError("No save data found.");
+        }
+    }
+
     private void PlaceEntryAndExitRooms() {
 
         //entry room
@@ -184,7 +246,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     private void SpawnKeys(int count)
     {
         for (int i = 0; i < count; i++)
@@ -200,6 +261,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SpawnHealth(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            MazeCell randomCell = mazeInstance.GetCell(mazeInstance.RandomCoordinates);
+            Vector3 healthPosition = randomCell.transform.position;
+            float floatHeight = 0.04f; // The height above the ground at which the key will float
+            healthPosition.y += floatHeight;
+
+            GameObject health = Instantiate(healthPrefab, healthPosition, Quaternion.identity);
+            health.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+        }
+    }
+
+
+
+    private void SpawnStoryItems(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            MazeCell randomCell = mazeInstance.GetCell(mazeInstance.RandomCoordinates);
+            Vector3 itemPosition = randomCell.transform.position;
+            float floatHeight = 0.1f;
+            itemPosition.y += floatHeight;
+
+            GameObject storyItem = Instantiate(storyItemPrefab, itemPosition, Quaternion.identity);
+            storyItem.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+
+            StoryTrigger storyTrigger = storyItem.GetComponent<StoryTrigger>();
+            if (storyTrigger != null && i < storyFiles.Length)
+            {
+                storyTrigger.storyFileName = storyFiles[i];
+            }
+        }
+    }
+
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
     /*
     private void RestartGame()
     {

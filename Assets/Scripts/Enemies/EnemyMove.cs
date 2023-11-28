@@ -42,7 +42,7 @@ public class EnemyMove : MonoBehaviour
             if (Vector3.Distance(transform.position, player.position) <= attackRange)
             {
                 animator.SetTrigger("Attack"); // Trigger the attack animation
-                
+
                 /**/
 
                 // Safely call the TakeDamage method on the player
@@ -55,14 +55,14 @@ public class EnemyMove : MonoBehaviour
                 {
                     Debug.LogError("PlayerHealth component not found on the player!");
                 }
-                
+
             }
-            else
-            {
-                animator.SetTrigger("Walk"); // Trigger the walk when player isn't near
-            }
+            //else
+            //{
+            //    animator.SetTrigger("Walk"); // Trigger the walk when player isn't near
+            //}
         }
-        
+
         // Fixing the enemy floating (existing code)
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -Vector3.up, out hit))
@@ -86,10 +86,6 @@ public class EnemyMove : MonoBehaviour
         }
     }
 }
-
-
-
-
 
 
 /*

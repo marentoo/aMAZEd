@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
 
     public int keysCollected = 0;
+    private GameManager gameManager;
     private HUDManager hudManager;
     private MazeCell currentCell;
     private MazeCell targetCell;
@@ -19,9 +20,10 @@ public class Player : MonoBehaviour
     private bool isRotating;
 
     private float moveThreshold = 0.1f;
-    private int keyCount = 0;
+    //private int keyCount = 0;
 
-   private Animator scavengerAnimator;
+    private Animator scavengerAnimator;
+    private ElevatorDoorsController elevatorDoorsController;
 
     private void Start()
     {
@@ -39,10 +41,27 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Animator not found on Scavenger Variant");
         }
+
+
+        gameManager = FindObjectOfType<GameManager>();
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager not found in the scene.");
+        }
+
+        // Find the ElevatorDoorsController in the scene (assuming there's only one)
+        elevatorDoorsController = FindObjectOfType<ElevatorDoorsController>();
+        if (elevatorDoorsController == null)
+        {
+            Debug.LogWarning("ElevatorDoorsController script not found in the scene.");
+        }
+
+
     }
 
-     private void FixedUpdate(){
-        
+    private void FixedUpdate()
+    {
+
     }
 
     private void Move(MazeDirection direction)
@@ -62,31 +81,32 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Animate(){
-        if (Input.GetKeyDown(KeyCode.W)) 
-        { 
-            scavengerAnimator.SetTrigger("Walk"); 
+    private void Animate()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            scavengerAnimator.SetTrigger("Walk");
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow)) 
-        { 
-            scavengerAnimator.SetTrigger("Walk"); 
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            scavengerAnimator.SetTrigger("Walk");
         }
-        else if (Input.GetKeyDown(KeyCode.S)) 
-        { 
-            scavengerAnimator.SetTrigger("Back"); 
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            scavengerAnimator.SetTrigger("Back");
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow)) 
-        { 
-            scavengerAnimator.SetTrigger("Back"); 
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            scavengerAnimator.SetTrigger("Back");
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) 
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)
                 || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            scavengerAnimator.SetTrigger("Walk"); 
+            scavengerAnimator.SetTrigger("Walk");
         }
 
-        else if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.DownArrow) ) || 
-                 (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.UpArrow) ) ||
+        else if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.DownArrow)) ||
+                 (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.UpArrow)) ||
                  (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow)) ||
                  (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow)))
         {
@@ -111,6 +131,12 @@ public class Player : MonoBehaviour
     {
         Animate();
 
+        if (IsNearElevator() && HasCollectedRequiredKeys())
+        {
+            Debug.Log("Collected half of keyes!");
+            OpenElevatorDoor();
+        }
+
         if (!isMoving)
         {
             CheckInput();
@@ -128,7 +154,7 @@ public class Player : MonoBehaviour
         }
     }
 
-   
+
 
     private void CheckMouseRotation()
     {
@@ -139,7 +165,7 @@ public class Player : MonoBehaviour
             transform.Rotate(0f, mouseX * rotationSpeed * Time.deltaTime, 0f);
             UpdateCurrentDirection();
         }
-        if (Mathf.Abs(mouseY)> 0)
+        if (Mathf.Abs(mouseY) > 0)
         {
             transform.Rotate(0f, mouseX * rotationSpeed * Time.deltaTime, 0f);
             UpdateCurrentDirection();
@@ -234,7 +260,7 @@ public class Player : MonoBehaviour
         }
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
-        
+
         float distanceToTarget = Vector3.Distance(transform.localPosition, targetPosition);
         //Debug.Log($"Distance to target: {distanceToTarget}");
 
@@ -279,14 +305,49 @@ public class Player : MonoBehaviour
     //for doors
     //private MazeCell currentCell;
 
-	public void SetLocation (MazeCell cell) {
-		if (currentCell != null) {
-			currentCell.OnPlayerExited();
-		}
-		currentCell = cell;
-		transform.localPosition = cell.transform.localPosition;
-		currentCell.OnPlayerEntered();
-	}
+    public void SetLocation(MazeCell cell)
+    {
+        if (currentCell != null)
+        {
+            currentCell.OnPlayerExited();
+        }
+        currentCell = cell;
+        transform.localPosition = cell.transform.localPosition;
+        currentCell.OnPlayerEntered();
+    }
+
+    private bool IsNearElevator()
+    {
+        // Assuming the elevator is at cell (1,0)
+        MazeCell elevatorCell = gameManager.mazeInstance.GetCell(
+            new IntVector2(gameManager.mazeInstance.size.x - 1, gameManager.mazeInstance.size.z - 1));
+        float distanceToElevator = Vector3.Distance(transform.position, elevatorCell.transform.position);
+
+        // Define a suitable threshold distance
+        return distanceToElevator <= 2.0f;
+
+        Debug.Log("Player near doors.");
+    }
+
+    private bool HasCollectedRequiredKeys()
+    {
+        return keysCollected >= GameManager.numberOfKeys / 2;
+    }
+
+
+    private void OpenElevatorDoor()
+    {
+        Debug.Log("Doors are opening.");
+        if (elevatorDoorsController != null)
+        {
+            elevatorDoorsController.OpenDoors();
+        }
+    }
+
+
+
+    
+
 }
 
 public class PlayerSpawn : MonoBehaviour
