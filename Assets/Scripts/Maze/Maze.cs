@@ -203,5 +203,55 @@ public class Maze : MonoBehaviour {
 		rooms.Add(newRoom);
 		return newRoom;
 	}
+
+	//for adding the lift to maze map
+	//public MazeCell elevatorCellPrefabEnter; // Assign the prefab for the elevator cell in the inspector
+	//public MazeCell elevatorCellPrefabExit; // Assign the prefab for the elevator cell in the inspector
+
+	// This method is called after the standard maze generation is complete
+	/*
+	public void AddElevatorCells() {
+		// Assume 'size' is the size of your maze, and 'elevatorCellPrefab' is assigned.
+		PlaceElevatorCell(new IntVector2(-1, 0));
+
+		// Place the elevator at (size.x, size.z - 1), which might be (instance+1, instance-1)
+		PlaceElevatorCell(new IntVector2(size.x, size.z - 1));
+	}*/
+	/*
+	public void PlaceElevatorCell(IntVector2 coordinates, bool isExit) { //, MazeDirection directionToMaze
+		// Instantiate the elevator cell at the given coordinates
+		MazeCell elevatorCellInstance = Instantiate(elevatorCellPrefabEnter) as MazeCell;
+		if(isExit)
+		{
+			elevatorCellInstance = Instantiate(elevatorCellPrefabExit) as MazeCell;
+		}
+		//MazeCell elevatorCellInstance = Instantiate(elevatorCellPrefabExit) as MazeCell;
+		elevatorCellInstance.transform.parent = transform; // Set the parent to the maze transform
+		elevatorCellInstance.transform.localPosition = new Vector3(coordinates.x, 0, coordinates.z);
+
+		// Optionally, if you need to connect the elevator cell to the maze, you can call ConnectElevatorToMaze here
+		ConnectElevatorToMaze(coordinates); //, directionToMaze
+	}
+
+	// Call this method after the maze generation is complete
+	public void ConnectElevatorToMaze(IntVector2 elevatorCoordinates) { //, MazeDirection directionToMaze
+		// Determine the direction of the maze cell that should connect to the elevator
+		// For example, if the elevator is at (-1,0), the direction would be East to connect to (0,0)
+		MazeDirection directionToMaze = MazeDirection.North; // This is an example; you'll need to determine this based on your elevator's location
+
+		// The coordinates of the maze cell adjacent to the elevator cell
+		IntVector2 adjacentCoordinates = elevatorCoordinates + MazeDirections.ToIntVector2(directionToMaze);
+
+		// Check if the adjacent coordinates are within the maze bounds
+		if (ContainsCoordinates(adjacentCoordinates)) {
+			// Get the maze cell adjacent to the elevator
+			MazeCell adjacentCell = GetCell(adjacentCoordinates);
+
+			// Create a passage between the adjacent cell and the elevator
+			// This will depend on your MazeCell implementation; here's a conceptual example:
+			//CreatePassage(adjacentCell, elevatorCellPrefabEnter, directionToMaze.GetOpposite());
+			//CreatePassage(adjacentCell, elevatorCellPrefabExit, directionToMaze.GetOpposite());
+		}
+	}*/
 }
 

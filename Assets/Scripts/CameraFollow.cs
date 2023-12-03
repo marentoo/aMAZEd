@@ -9,6 +9,15 @@ public class CameraFollow : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        // First, check if the 'target' is not null
+        if(target == null)
+        {
+            // Optionally, you can log an error or a warning here if needed
+            //Debug.Log("CameraFollow target is not set.");
+            return; // Exit the function if there is no target to follow
+        }
+
         // Define a position the camera should move towards (target position with an offset)
         Vector3 desiredPosition = target.position + offset;
         
@@ -29,5 +38,11 @@ public class CameraFollow : MonoBehaviour
     {
         target = newTarget; // Assign the new target
         // You could also add additional logic here if needed
+    }
+
+    // Call this method to stop the camera from following the target (e.g., when the player is destroyed)
+    public void StopFollowingPlayer()
+    {
+        target = null; // Remove the target
     }
 }

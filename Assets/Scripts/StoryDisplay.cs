@@ -25,7 +25,7 @@ public class StoryDisplay : MonoBehaviour
         }
         else
         {
-            Debug.LogError("File not found: " + path);
+            Debug.Log("File not found: " + path);
         }
     }
 

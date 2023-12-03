@@ -4,9 +4,11 @@ using Unity.AI.Navigation;
 using UnityEngine.AI;
 using System.Threading;
 using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 
 public class GameManager : MonoBehaviour
 {
+
 
     public Maze mazePrefab;
     public Maze mazeInstance;
@@ -17,6 +19,8 @@ public class GameManager : MonoBehaviour
     //new
     public GameObject entryRoomPrefab;
     public GameObject exitRoomPrefab;
+    public PlayableDirector cutsceneDirector;
+    public PlayableDirector cutsceneDirector2;
 
     public Transform playerSpawnPoint;
     public Player playerPrefab;
@@ -32,6 +36,11 @@ public class GameManager : MonoBehaviour
     public int numberOfFastZombies = 2;
 
     public GameObject keyPrefab, healthPrefab;
+    private GameObject key;
+    private GameObject health;
+    private GameObject storyItem;
+    private GameObject entry, exit;
+
     public static int numberOfKeys = 3;
     public static int numberOfHealths = 2;
 
@@ -54,6 +63,12 @@ public class GameManager : MonoBehaviour
         {
             //mazeInstance.ToggleDoorsInRoom(false); // Close all doors in the current room
         }
+
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+			RestartGame();
+		}
+
     }
 
     //[SerializeField]
@@ -71,33 +86,89 @@ public class GameManager : MonoBehaviour
 
         // Instantiate and generate the maze.
         mazeInstance = Instantiate(mazePrefab) as Maze;
-        yield return StartCoroutine(mazeInstance.Generate());
-        PlaceEntryAndExitRooms();
-        //mazeInstance.RemoveWallsAtCoordinates(new IntVector2(0, 0), new IntVector2(1, 0), new IntVector2(2, 0));
-        mazeInstance.RemoveWallsAtCoordinates(new IntVector2(1, 0));
-        //mazeInstance.RemoveWallsAtCoordinates1(new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 1, mazeInstance.size.z - 1), new IntVector2(mazeInstance.size.x - 3, mazeInstance.size.z - 1));
-        mazeInstance.RemoveWallsAtCoordinates1( new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1));
+        //yield return StartCoroutine(mazeInstance.Generate());
+        Coroutine mazeGenerator = StartCoroutine(mazeInstance.Generate());
+        //StartCoroutine(mazeInstance.Generate());
+        
 
-        //MazeRoom liftRoomInstance = Instantiate(liftRoomPrefab) as MazeRoom;
-        //liftRoomInstance.transform.position = CalculateLiftRoomPosition();
-        //ConnectLiftRoomToMaze(liftRoomInstance);
 
-        // Instantiate the player and set location.
+        if (cutsceneDirector != null)
+        {
+            cutsceneDirector.Play();
+            Debug.Log("Cutscene playing.");
+        }
+        Debug.Log("Cutscene should now be playing");
+        
+
+        // Ensure the maze generation coroutine has finished as well.
+        yield return mazeGenerator;
+
+        if (mazeInstance != null)
+        {
+            PlaceEntryAndExitRooms();
+
+            mazeInstance.RemoveWallsAtCoordinates(new IntVector2(1, 0));
+            mazeInstance.RemoveWallsAtCoordinates1( new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1));
+
+            // Instantiate the player and set location.
+            playerInstance = Instantiate(playerPrefab) as Player;
+            playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
+            
+            //handle baking of navMesh
+            nmBuilder.BuildNavMesh();
+
+            // Instantiate the zombies and keys
+            SpawnZombies(numberOfZombies);
+            SpawnFastZombies(numberOfFastZombies);
+            SpawnKeys(numberOfKeys);
+            SpawnHealth(numberOfHealths);
+            SpawnStoryItems(storyFiles.Length);
+
+
+            CameraFollow cameraFollowScript = Camera.main.GetComponent<CameraFollow>();
+            if (cameraFollowScript != null)
+            {
+                cameraFollowScript.StartFollowingPlayer(playerInstance.transform);
+            }
+            else
+            {
+                Debug.LogError("CameraFollow script not found on the main camera!");
+            }
+        }
+
+        
+
+        cutsceneDirector.Stop();
+        //yield return null;
+
+        if (cutsceneDirector2 != null)
+        {
+            cutsceneDirector2.Play();
+            Debug.Log("Cutscene playing.");
+        }
+        
+
+        Debug.Log("Maze generated!!!");
+        Camera.main.clearFlags = CameraClearFlags.Depth;
+        Camera.main.rect = new Rect(0f, 0f, 0.3f, 0.5f);
+
+        // After maze generation is done, stop the cutscene if it is still playing
+        cutsceneDirector2.Stop();
+        
+        //yield return null;
+
+       
+    }
+
+    private void SetupPlayer()
+    {
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
-        // Assuming playerPrefab is your player GameObject prefab
+        // ... other player setup code.
+    }
 
-        //handle baking of navMesh
-        nmBuilder.BuildNavMesh();
-
-        // Instantiate the zombies and keys
-        SpawnZombies(numberOfZombies);
-        SpawnFastZombies(numberOfFastZombies);
-        SpawnKeys(numberOfKeys);
-        SpawnHealth(numberOfHealths);
-        SpawnStoryItems(storyFiles.Length);
-
-
+    private void SetupCamera()
+    {
         CameraFollow cameraFollowScript = Camera.main.GetComponent<CameraFollow>();
         if (cameraFollowScript != null)
         {
@@ -107,34 +178,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("CameraFollow script not found on the main camera!");
         }
-
-        Camera.main.clearFlags = CameraClearFlags.Depth;
-        Camera.main.rect = new Rect(0f, 0f, 0.3f, 0.5f);
     }
 
-    /*
-    private MazeCell CreateOutofBoundCell(IntVector2 coordinates) {
-        MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
-        newCell.coordinates = coordinates;
-        newCell.name = "Out of Bound Cell " + coordinates.x + ", " + coordinates.z;
-        newCell.transform.parent = transform;
-        // Position the cell outside of the maze boundaries
-        newCell.transform.localPosition = new Vector3(coordinates.x, 0f, coordinates.z);
-        return newCell;
-    }*/
-
-    private Vector3 CalculateLiftRoomPosition()
-    {
-        // Calculate where the lift room should be instantiated
-        // This is just an example and would need to be adjusted based on your game's logic
-        return new Vector3(mazeInstance.size.x, 0, mazeInstance.size.z);
-    }
-
-    private void ConnectLiftRoomToMaze(MazeRoom liftRoomInstance)
-    {
-        // Create passages or doors that connect the lift room to the maze
-        // This method will need to be customized based on how you want to connect the rooms
-    }
+    
     public void SaveGame()
     {
         if (playerInstance == null)
@@ -193,13 +239,16 @@ public class GameManager : MonoBehaviour
         /**/
         Quaternion entryRotation = Quaternion.Euler(0, 90, 0); // Adjust this as needed
         MazeCell entryCell = mazeInstance.GetCell(new IntVector2(0, 0));
-        Instantiate(entryRoomPrefab, entryCell.transform.position, entryRotation);
-        
+        entry = Instantiate(entryRoomPrefab, entryCell.transform.position, entryRotation);
+        // Assume 'size' is the size of your maze, and 'elevatorCellPrefab' is assigned.
+		//mazeInstance.PlaceElevatorCell(new IntVector2(0, -1), false); //, MazeDirection.South
 
         //exit room
         Quaternion exitRotation = Quaternion.Euler(0, -90, 0); // Adjust this as needed
         MazeCell exitCell = mazeInstance.GetCornerCell(new IntVector2(mazeInstance.size.x - 1, mazeInstance.size.z - 1)); // Top-right corner
-        Instantiate(exitRoomPrefab, exitCell.transform.position, exitRotation);
+        exit = Instantiate(exitRoomPrefab, exitCell.transform.position, exitRotation);
+		// Place the elevator at (size.x, size.z - 1), which might be (instance+1, instance-1)
+		//mazeInstance.PlaceElevatorCell(new IntVector2(mazeInstance.size.x-1, mazeInstance.size.z), true);//, MazeDirection.North
     }
     
 
@@ -255,7 +304,7 @@ public class GameManager : MonoBehaviour
             float floatHeight = 0.04f; // The height above the ground at which the key will float
             keyPosition.y += floatHeight;
 
-            GameObject key = Instantiate(keyPrefab, keyPosition, Quaternion.identity);
+            key = Instantiate(keyPrefab, keyPosition, Quaternion.identity);
             key.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 
         }
@@ -270,7 +319,7 @@ public class GameManager : MonoBehaviour
             float floatHeight = 0.04f; // The height above the ground at which the key will float
             healthPosition.y += floatHeight;
 
-            GameObject health = Instantiate(healthPrefab, healthPosition, Quaternion.identity);
+            health = Instantiate(healthPrefab, healthPosition, Quaternion.identity);
             health.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
         }
     }
@@ -286,7 +335,7 @@ public class GameManager : MonoBehaviour
             float floatHeight = 0.1f;
             itemPosition.y += floatHeight;
 
-            GameObject storyItem = Instantiate(storyItemPrefab, itemPosition, Quaternion.identity);
+            storyItem = Instantiate(storyItemPrefab, itemPosition, Quaternion.identity);
             storyItem.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
             StoryTrigger storyTrigger = storyItem.GetComponent<StoryTrigger>();
@@ -297,22 +346,65 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    /*
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-    }
-    /*
+    }*/
+    
     private void RestartGame()
     {
+        // Stop all coroutines to prevent them from affecting the new game instance
         StopAllCoroutines();
-        Destroy(mazeInstance.gameObject);
+
+        // Destroy the maze instance and all its children (including walls, cells, etc.)
+        if (mazeInstance != null)
+        { Destroy(mazeInstance.gameObject); }
+
+        // Stop the camera from following the destroyed player
+        Camera.main.GetComponent<CameraFollow>().StopFollowingPlayer();
+
+        // Destroy the player instance
         if (playerInstance != null)
-        {
-            Destroy(playerInstance.gameObject);
-            Destroy(zombieInstance.gameObject);
-        }
+        { Destroy(playerInstance.gameObject); }
+
+        // Destroy all zombies in the scene
+        foreach (var zombie in FindObjectsOfType<Zombie>())
+        { Destroy(zombie.gameObject); }
+        
+        // Destroy all fast zombies in the scene
+        foreach (var ZombieFast in FindObjectsOfType<ZombieFast>())
+        { Destroy(ZombieFast.gameObject); }
+
+        // Destroy all keys in the scene
+        foreach (var key in GameObject.FindGameObjectsWithTag("Key"))
+        { Destroy(key.gameObject); }
+        
+        // Destroy all keys in the scene
+        foreach (var storyItem in GameObject.FindGameObjectsWithTag("Story"))
+        { Destroy(storyItem.gameObject); }
+        
+        // Destroy all hearts in the scene
+        foreach (var health in GameObject.FindGameObjectsWithTag("Health"))
+        { Destroy(health.gameObject); }
+
+        // Destroy all entry in the scene
+        if (entry != null)
+        { Destroy(entry.gameObject);  entry = null; }
+
+        // Destroy all exit in the scene
+        if (exit != null)
+        { Destroy(exit.gameObject); exit = null;}
+
+        
+
+
+        // Start a new game
         StartCoroutine(BeginGame());
-    }*/
+    }
+
+   
+
+
 }

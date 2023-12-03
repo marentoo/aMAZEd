@@ -7,6 +7,9 @@ TagManager:
   - Zombie
   - TourchSpot
   - Scavenger
+  - Key
+  - Health
+  - Story
   layers:
   - Default
   - TransparentFX
