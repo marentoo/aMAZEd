@@ -7,6 +7,7 @@ public class StoryDisplay : MonoBehaviour
 {
     public TextMeshProUGUI storyText; // Reference to your TextMeshPro component
     public string fileName;
+    public string message;
 
     public void DisplayStory()
     {
@@ -27,6 +28,16 @@ public class StoryDisplay : MonoBehaviour
         {
             Debug.Log("File not found: " + path);
         }
+    }
+
+    public void DisplayMessage()
+    {
+        string story = message;
+        storyText.text = story;
+        storyText.gameObject.SetActive(true); // Activate TextMeshPro
+        gameObject.SetActive(true); // Activate Canvas
+
+        StartCoroutine(HideStoryAfterDelay(3f)); // Hide after 15 seconds
     }
 
     private IEnumerator HideStoryAfterDelay(float delay)

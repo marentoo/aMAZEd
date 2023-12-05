@@ -31,10 +31,10 @@ Transform:
   m_Children:
   - {fileID: 5985395317940548538}
   - {fileID: 5372404707228908779}
+  - {fileID: 5900587228028779889}
   - {fileID: 8235716162905208542}
   - {fileID: 2284356079450046960}
   - {fileID: 8115439091485854356}
-  - {fileID: 5900587228028779889}
   - {fileID: 9088576053011022181}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -145,7 +145,6 @@ GameObject:
   - component: {fileID: 6281754240820986177}
   - component: {fileID: 1489657830496731453}
   - component: {fileID: 4792617412397692796}
-  - component: {fileID: 2059748918594958076}
   m_Layer: 0
   m_Name: ControlerCameraOut
   m_TagString: Untagged
@@ -267,40 +266,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &2059748918594958076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1623162222732508602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowDebugText: 0
-  m_ShowCameraFrustum: 1
-  m_IgnoreTimeScale: 0
-  m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 0
-  m_BlendUpdateMethod: 1
-  m_DefaultBlend:
-    m_Style: 1
-    m_Time: 2
-    m_CustomCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  m_CustomBlends: {fileID: 0}
-  m_CameraCutEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_CameraActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1914765313265061870
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,7 +857,7 @@ PlayableDirector:
   - key: {fileID: 8431133661785060463, guid: c1b1e838490734e4795d9631a2e94132, type: 2}
     value: {fileID: 4806580896209118280}
   - key: {fileID: -1626278889706785050, guid: c1b1e838490734e4795d9631a2e94132, type: 2}
-    value: {fileID: 2059748918594958076}
+    value: {fileID: 0}
   - key: {fileID: 6579123712814354666, guid: c1b1e838490734e4795d9631a2e94132, type: 2}
     value: {fileID: 3677657728399606490}
   m_ExposedReferences:

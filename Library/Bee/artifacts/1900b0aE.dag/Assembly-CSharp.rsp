@@ -405,9 +405,13 @@
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/PlayerHealth.cs"
 "Assets/Scripts/SaveData.cs"
+"Assets/Scripts/SaveLevel.cs"
 "Assets/Scripts/SaveSystem.cs"
+"Assets/Scripts/SplashScreenManager.cs"
 "Assets/Scripts/StoryDisplay.cs"
 "Assets/Scripts/StoryTrigger.cs"
+"Assets/Scripts/TextManager.cs"
+"Assets/Scripts/TimelineMazeContorl.cs"
 "Assets/SimpleCollectiblesPack/SimpleCollectibleScript.cs"
 -langversion:9.0
 

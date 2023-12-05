@@ -10,6 +10,7 @@ TagManager:
   - Key
   - Health
   - Story
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX

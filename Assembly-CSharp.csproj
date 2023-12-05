@@ -49,6 +49,7 @@
      <Compile Include="Assets\Prefabs\Objects\Keypad\Scripts\KeypadButton.cs" />
      <Compile Include="Assets\Old Sea Port\EffectExamples\Shared\Scripts\ParticleCollision.cs" />
      <Compile Include="Assets\Prefabs\Objects\Keypad\Scripts\SlidingDoor.cs" />
+     <Compile Include="Assets\Scripts\SaveLevel.cs" />
      <Compile Include="Assets\Old Sea Port\EffectExamples\Shared\Scripts\DecalDestroyer.cs" />
      <Compile Include="Assets\Prefabs\Objects\HandTorch\Scripts\ToggleLight.cs" />
      <Compile Include="Assets\Scripts\Maze\MazeDoor.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\Scripts\Maze\MazeCellEdge.cs" />
      <Compile Include="Assets\Scripts\StoryDisplay.cs" />
      <Compile Include="Assets\Scripts\Maze\MazeWall.cs" />
+     <Compile Include="Assets\Scripts\TextManager.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyFastMove.cs" />
      <Compile Include="Assets\Prefabs\Enemies\Tensori\SkinlessZombie\Demo Scripts\AnimationItemData.cs" />
      <Compile Include="Assets\Pause Menu Assets\Scripts\Pausemenu\SaveSettings.cs" />
@@ -77,6 +79,7 @@
      <Compile Include="Assets\Scripts\Maze\MazeRoom.cs" />
      <Compile Include="Assets\Old Sea Port\EffectExamples\Shared\Scripts\GunShoot.cs" />
      <Compile Include="Assets\Pause Menu Assets\Scripts\Utlities\CoroutineUtlities.cs" />
+     <Compile Include="Assets\Scripts\TimelineMazeContorl.cs" />
      <Compile Include="Assets\Scripts\DeathScreen.cs" />
      <Compile Include="Assets\Prefabs\Objects\HandTorch\Scripts\RotateObject.cs" />
      <Compile Include="Assets\Scripts\StoryTrigger.cs" />
@@ -85,6 +88,7 @@
      <Compile Include="Assets\Prefabs\Objects\Keypad\Scripts\Keypad.cs" />
      <Compile Include="Assets\Scripts\PlayerHealth.cs" />
      <Compile Include="Assets\Scripts\SaveSystem.cs" />
+     <Compile Include="Assets\Scripts\SplashScreenManager.cs" />
      <Compile Include="Assets\Scripts\Maze\MazeNavMeshBuilder.cs" />
      <Compile Include="Assets\Scripts\Enemies\Zombie.cs" />
      <Compile Include="Assets\Prefabs\Objects\Keypad\Scripts\KeypadInteractionFPV.cs" />

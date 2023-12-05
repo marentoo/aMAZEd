@@ -8,15 +8,11 @@ using UnityEngine.Playables;
 
 public class GameManager : MonoBehaviour
 {
-
-
     public Maze mazePrefab;
     public Maze mazeInstance;
-
     public MazeCell cellPrefab;
-    //public LiftRoom LiftPrefab;
+    private StoryDisplay storyDisplay;
 
-    //new
     public GameObject entryRoomPrefab;
     public GameObject exitRoomPrefab;
     public PlayableDirector cutsceneDirector;
@@ -25,6 +21,8 @@ public class GameManager : MonoBehaviour
     public Transform playerSpawnPoint;
     public Player playerPrefab;
     private Player playerInstance;
+    private Camera playerCamera;
+
 
     private Zombie zombieInstance;
     public Zombie zombiePrefab;
@@ -45,16 +43,21 @@ public class GameManager : MonoBehaviour
     public static int numberOfHealths = 2;
 
     public GameObject storyItemPrefab; // Assign your story item prefab in the Inspector
-    public string[] storyFiles; // Array of story file names
+    private string[] storyFiles;  // Array of story file names
+
+    public int numberOfStories = 0;
+    //private DataLevel level;
+    public int level = 1;
 
     private void Start()
     {
         StartCoroutine(BeginGame());
+        storyDisplay = FindObjectOfType<StoryDisplay>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.L))
         {
             SaveGame();
         }
@@ -66,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
-			RestartGame();
+			//NewLevel();
 		}
 
     }
@@ -79,18 +82,79 @@ public class GameManager : MonoBehaviour
         nmBuilder = GetComponent<MazeNavMeshBuilder>();
     }
 
+
+    private void LevelSettings()
+    {
+        if (level == 1) // Assuming the first level is represented by 1
+        {
+            mazeInstance.size = new IntVector2(5, 5); // Set maze size for level 1
+            mazeInstance.roomExpansionChance = 0.5f; // Set room expansion probability for level 1
+            numberOfKeys = 2; // Set number of keys for level 1
+            numberOfZombies = 0; // No zombies for level 1
+            numberOfFastZombies = 0; // No fast zombies for level 1
+            numberOfHealths = 0; // No health pickups for level 1
+            numberOfStories = 0; // No story items for level 1
+        }
+        else if (level == 2) // Assuming the first level is represented by 1
+        {
+            mazeInstance.size = new IntVector2(6, 6); // Set maze size for level 1
+            mazeInstance.roomExpansionChance = 0.4f; // Set room expansion probability for level 1
+            numberOfKeys = 2; // Set number of keys for level 1
+            numberOfZombies = 1; // No zombies for level 1
+            numberOfFastZombies = 0; // No fast zombies for level 1
+            numberOfHealths = 3; // No health pickups for level 1
+            numberOfStories = 0; // No story items for level 1
+        }
+        else if (level == 3) // Assuming the first level is represented by 1
+        {
+            mazeInstance.size = new IntVector2(7, 7); // Set maze size for level 1
+            mazeInstance.roomExpansionChance = 0.4f; // Set room expansion probability for level 1
+            numberOfKeys = 2; // Set number of keys for level 1
+            numberOfZombies = 1; // No zombies for level 1
+            numberOfFastZombies = 1; // No fast zombies for level 1
+            numberOfHealths = 6; // No health pickups for level 1
+            numberOfStories = 1; // No story items for level 1
+        }
+        else
+        {
+            // For higher levels, increase maze size and number of zombies slightly
+            int sizeIncrease = level - 1; // The amount by which to increase the maze size and zombie count
+            mazeInstance.size = new IntVector2(5 + sizeIncrease, 5 + sizeIncrease);
+            numberOfKeys = 3; // The default number of keys for higher levels
+            numberOfZombies = 1 + sizeIncrease; // Increase number of zombies
+            numberOfFastZombies = 1 + (int)(sizeIncrease * 0.5f); // Increase number of fast zombies, half the rate of regular zombies
+            numberOfHealths = (int)(numberOfFastZombies * 4f) + (int)(numberOfZombies * 2f); // The default number of health pickups for higher levels
+            numberOfStories = 1; // The default number of story items for higher levels
+            mazeInstance.roomExpansionChance = 0.4f + 0.05f * (sizeIncrease % 10); // Increase room expansion probability
+        }
+
+    }
     private IEnumerator BeginGame()
     {
         Camera.main.clearFlags = CameraClearFlags.Skybox;
         Camera.main.rect = new Rect(0f, 0f, 1f, 1f);
 
+        
         // Instantiate and generate the maze.
         mazeInstance = Instantiate(mazePrefab) as Maze;
+
+        /*
+        level = SaveLevel.Load();
+        if (level != null)
+        {
+            if (level == 0){
+                //logic of generating the level
+            }
+        }
+        */
+
+        // Adjust game settings based on the level
+        LevelSettings();
+
         //yield return StartCoroutine(mazeInstance.Generate());
         Coroutine mazeGenerator = StartCoroutine(mazeInstance.Generate());
         //StartCoroutine(mazeInstance.Generate());
         
-
 
         if (cutsceneDirector != null)
         {
@@ -106,57 +170,55 @@ public class GameManager : MonoBehaviour
         if (mazeInstance != null)
         {
             PlaceEntryAndExitRooms();
-
-            mazeInstance.RemoveWallsAtCoordinates(new IntVector2(1, 0));
-            mazeInstance.RemoveWallsAtCoordinates1( new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1));
-
             // Instantiate the player and set location.
-            playerInstance = Instantiate(playerPrefab) as Player;
-            playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
+            SetupPlayer();
             
             //handle baking of navMesh
             nmBuilder.BuildNavMesh();
 
-            // Instantiate the zombies and keys
-            SpawnZombies(numberOfZombies);
-            SpawnFastZombies(numberOfFastZombies);
+            //spawn items
             SpawnKeys(numberOfKeys);
             SpawnHealth(numberOfHealths);
-            SpawnStoryItems(storyFiles.Length);
+            SpawnStoryItems(numberOfStories);
 
 
-            CameraFollow cameraFollowScript = Camera.main.GetComponent<CameraFollow>();
-            if (cameraFollowScript != null)
-            {
-                cameraFollowScript.StartFollowingPlayer(playerInstance.transform);
-            }
-            else
-            {
-                Debug.LogError("CameraFollow script not found on the main camera!");
-            }
+            SetupCamera();
+            Debug.Log("Maze generated!!!");
         }
-
         
-
         cutsceneDirector.Stop();
-        //yield return null;
+        Debug.Log("First cutscene stopped.");
 
+        // Wait for the second cutscene to finish
+        // Begin the second cutscene
         if (cutsceneDirector2 != null)
         {
+            Debug.Log("Second cutscene playing.");
             cutsceneDirector2.Play();
-            Debug.Log("Cutscene playing.");
+
+            // Wait for the second cutscene to finish
+            yield return new WaitUntil(() => cutsceneDirector2.state != PlayState.Playing);
+            cutsceneDirector2.Stop();
         }
         
+        // Instantiate the zombies
+        SpawnZombies(numberOfZombies);
+        SpawnFastZombies(numberOfFastZombies);
 
-        Debug.Log("Maze generated!!!");
+
         Camera.main.clearFlags = CameraClearFlags.Depth;
         Camera.main.rect = new Rect(0f, 0f, 0.3f, 0.5f);
+        Camera.main.depth = 3;
 
-        // After maze generation is done, stop the cutscene if it is still playing
-        cutsceneDirector2.Stop();
+        //disable cutscene view by switching player camera depth to higher one
+        if (playerCamera != null) {
+            playerCamera.depth = 2; // Reset the depth to make it the active camera
+        }
+
         
-        //yield return null;
-
+        //storyDisplay.message = "Level: 1, 2, 3, 4, 5, 6, 7, 8, 9 , 0";//+level;
+        //storyDisplay.message = "Level: " + level;
+        //storyDisplay.DisplayMessage();
        
     }
 
@@ -164,7 +226,16 @@ public class GameManager : MonoBehaviour
     {
         playerInstance = Instantiate(playerPrefab) as Player;
         playerInstance.SetLocation(mazeInstance.GetCell(new IntVector2(1, 0)));
-        // ... other player setup code.
+        playerInstance.transform.Rotate(0f, 180f, 0f);
+
+        //for disable cutscene view in next steps
+        GameObject cameraGameObject = GameObject.FindWithTag("PlayerCamera");
+        if (cameraGameObject != null) {
+            playerCamera = cameraGameObject.GetComponent<Camera>();
+        }
+        else {
+            Debug.LogError("No camera with the tag 'PlayerCamera' was found in the scene.");
+        }
     }
 
     private void SetupCamera()
@@ -249,6 +320,10 @@ public class GameManager : MonoBehaviour
         exit = Instantiate(exitRoomPrefab, exitCell.transform.position, exitRotation);
 		// Place the elevator at (size.x, size.z - 1), which might be (instance+1, instance-1)
 		//mazeInstance.PlaceElevatorCell(new IntVector2(mazeInstance.size.x-1, mazeInstance.size.z), true);//, MazeDirection.North
+
+        mazeInstance.RemoveWallsAtCoordinates(new IntVector2(1, 0));
+        mazeInstance.RemoveWallsAtCoordinates1( new IntVector2(mazeInstance.size.x - 2, mazeInstance.size.z - 1));
+
     }
     
 
@@ -328,6 +403,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnStoryItems(int count)
     {
+        storyFiles = new string[] {"story1.txt", "story2.txt", "story3.txt", "story4.txt", "story5.txt", "story6.txt", "story7.txt"};
         for (int i = 0; i < count; i++)
         {
             MazeCell randomCell = mazeInstance.GetCell(mazeInstance.RandomCoordinates);
@@ -346,15 +422,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*
+    /**/
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-    }*/
+    }
     
-    private void RestartGame()
+    public void NewLevel()
     {
+        //save the number of current level
+        /*
+        DataLevel saveLevel = new DataLevel();
+        DataLevel.level = level + 1;
+        SaveLevel.Save(level);*/
+
+        level++;
+
         // Stop all coroutines to prevent them from affecting the new game instance
         StopAllCoroutines();
 

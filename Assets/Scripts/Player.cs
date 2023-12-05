@@ -1,16 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
 
     public int keysCollected = 0;
     private GameManager gameManager;
+
+    private StoryDisplay storyDisplay;
     private HUDManager hudManager;
     private MazeCell currentCell;
     private MazeCell targetCell;
     private MazeDirection currentDirection;
     private Quaternion targetRotation;
+    private TextManager textManager;
 
     private float moveSpeed = 1f;
     private float rotationSpeed = 120f;
@@ -18,6 +23,8 @@ public class Player : MonoBehaviour
     private Vector3 targetPosition;
     private bool isMoving;
     private bool isRotating;
+
+    private float distanceToElevator;
 
     private float moveThreshold = 0.1f;
     //private int keyCount = 0;
@@ -55,7 +62,7 @@ public class Player : MonoBehaviour
         {
             Debug.LogWarning("ElevatorDoorsController script not found in the scene.");
         }
-
+        storyDisplay = FindObjectOfType<StoryDisplay>();
 
     }
 
@@ -131,10 +138,31 @@ public class Player : MonoBehaviour
     {
         Animate();
 
+        if(IsNearElevator() && !HasCollectedRequiredKeys()){
+            storyDisplay.message = "Collect ALL keyes!";
+            storyDisplay.DisplayMessage();
+        }
+
         if (IsNearElevator() && HasCollectedRequiredKeys())
         {
             Debug.Log("Collected half of keyes!");
             OpenElevatorDoor();
+            if (distanceToElevator <= 1){
+                //textManager.SetMessage("Press Enter to leave"); // Set an initial message
+                //enterText.gameObject.SetActive(true); // Show the text when near the elevator
+                //textManager.ShowText(); // To show the text
+                storyDisplay.message = "Press ENTER to continue";
+                storyDisplay.DisplayMessage();
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    //gameManager.NewLevel(); // Call the NextLevel method when Enter is pressed
+                    gameManager.RestartGame(); // Call the NextLevel method when Enter is pressed
+                }
+                else
+                {
+                    //textManager.HideText();
+                }
+            }
         }
 
         if (!isMoving)
@@ -153,6 +181,8 @@ public class Player : MonoBehaviour
             RotateTowardsTarget();
         }
     }
+
+   
 
 
 
@@ -316,22 +346,20 @@ public class Player : MonoBehaviour
         currentCell.OnPlayerEntered();
     }
 
-    private bool IsNearElevator()
+    public bool IsNearElevator()
     {
         // Assuming the elevator is at cell (1,0)
         MazeCell elevatorCell = gameManager.mazeInstance.GetCell(
             new IntVector2(gameManager.mazeInstance.size.x - 1, gameManager.mazeInstance.size.z - 1));
-        float distanceToElevator = Vector3.Distance(transform.position, elevatorCell.transform.position);
+        distanceToElevator = Vector3.Distance(transform.position, elevatorCell.transform.position);
 
-        // Define a suitable threshold distance
-        return distanceToElevator <= 2.0f;
+        return distanceToElevator <= 2.0f; 
 
-        Debug.Log("Player near doors.");
     }
 
     private bool HasCollectedRequiredKeys()
     {
-        return keysCollected >= GameManager.numberOfKeys / 2;
+        return keysCollected >= GameManager.numberOfKeys;
     }
 
 
