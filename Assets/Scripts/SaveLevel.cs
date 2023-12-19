@@ -1,31 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class SaveLevel : MonoBehaviour
+/*public static class SaveLevel
 {
-    /*
-    //later it should be saved outside project folder
-    //private static string path = Application.persistentDataPath + "/savefile.json";
-
-    private static string path = Application.dataPath + "/Saves/savelevel.json";
-    public static void Save(DataLevel data)
+    public static SaveData CreateSaveData(Maze maze, Player player)
     {
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(path, json);
-    }
-    public static SaveData Load()
-    {
-        if (File.Exists(path))
+        SaveData saveData = new SaveData
         {
-            string json = File.ReadAllText(path);
-            return JsonUtility.FromJson<SaveData>(json);
-        }
-        return 0;
-    }*/
-}
+            mazeWidth = maze.Width,
+            mazeHeight = maze.Height,
+            cells = new List<CellData>(),
+            playerData = new PlayerData
+            {
+                positionX = player.transform.position.x,
+                positionY = player.transform.position.y,
+                positionZ = player.transform.position.z
+            }
+            // Populate other elements like zombies, keys...
+        };
 
-public class DataLevel : MonoBehaviour 
-{
-    public int level;
+        foreach (var cell in maze.Cells)
+        {
+            saveData.cells.Add(new CellData
+            {
+                x = cell.X,
+                y = cell.Y,
+                isWall = cell.IsWall
+                // Populate other cell properties
+            });
+        }
+
+        return saveData;
+    }
 }
+*/

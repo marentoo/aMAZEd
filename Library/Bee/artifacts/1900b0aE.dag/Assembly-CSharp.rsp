@@ -391,6 +391,7 @@
 "Assets/Scripts/HealthCollectible.cs"
 "Assets/Scripts/HUDManager.cs"
 "Assets/Scripts/Key.cs"
+"Assets/Scripts/LevelManager.cs"
 "Assets/Scripts/Maze/IntVector2.cs"
 "Assets/Scripts/Maze/Maze.cs"
 "Assets/Scripts/Maze/MazeCell.cs"

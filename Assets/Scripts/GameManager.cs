@@ -251,6 +251,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Maze maze;
+    public Player player;
+
+/*
+    public void SaveGame()
+    {
+        SaveData saveData = SaveLevel.CreateSaveData(maze, player);
+        SaveSystem.SaveGame(saveData);
+    }
+
+    public void LoadGame()
+    {
+        SaveData saveData = SaveSystem.LoadGame();
+        if (saveData != null)
+        {
+            LevelManager levelManager = GetComponent<LevelManager>();
+            levelManager.LoadLevel(saveData);
+        }
+    } */
+    
     
     public void SaveGame()
     {
@@ -260,17 +280,21 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-
         SaveData saveData = new SaveData();
+    //number of level
+        saveData.levelNumber = level;
+    //player position    
         saveData.playerPositionX = playerInstance.transform.position.x;
         saveData.playerPositionY = playerInstance.transform.position.y;
         saveData.playerPositionZ = playerInstance.transform.position.z;
-
+    //player camera rotetion
         Transform cameraTransform = Camera.main.transform;
         saveData.cameraRotationX = cameraTransform.eulerAngles.x;
         saveData.cameraRotationY = cameraTransform.eulerAngles.y;
         saveData.cameraRotationZ = cameraTransform.eulerAngles.z;
-
+    //number of keyes
+        saveData.numberOfCollectedKeyes = playerInstance.keysCollected;
+        
         SaveSystem.SaveGame(saveData);
 
     }
@@ -279,9 +303,11 @@ public class GameManager : MonoBehaviour
         SaveData saveData = SaveSystem.LoadGame();
         if (saveData != null)
         {
+            level = saveData.levelNumber;
             if (playerInstance != null)
             {
                 playerInstance.transform.position = new Vector3(saveData.playerPositionX, saveData.playerPositionY, saveData.playerPositionZ);
+                playerInstance.keysCollected = saveData.numberOfCollectedKeyes;
             }
             else
             {
@@ -290,9 +316,9 @@ public class GameManager : MonoBehaviour
 
             // Load other game state elements here, like enemies' positions, collected items, etc.
         }
-        if (Camera.main != null)
+        if (playerCamera != null)
         {
-            Camera.main.transform.eulerAngles = new Vector3(
+            playerCamera.transform.eulerAngles = new Vector3(
                 saveData.cameraRotationX,
                 saveData.cameraRotationY,
                 saveData.cameraRotationZ
@@ -303,6 +329,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No save data found.");
         }
     }
+    /**/
 
     private void PlaceEntryAndExitRooms() {
 
