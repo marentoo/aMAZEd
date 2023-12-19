@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour
 
         SaveData saveData = new SaveData();
     //number of level
-        saveData.levelNumber = level;
+        //saveData.levelNumber = level;
     //player position    
         saveData.playerPositionX = playerInstance.transform.position.x;
         saveData.playerPositionY = playerInstance.transform.position.y;
@@ -293,7 +293,7 @@ public class GameManager : MonoBehaviour
         saveData.cameraRotationY = cameraTransform.eulerAngles.y;
         saveData.cameraRotationZ = cameraTransform.eulerAngles.z;
     //number of keyes
-        saveData.numberOfCollectedKeyes = playerInstance.keysCollected;
+        //saveData.numberOfCollectedKeyes = playerInstance.keysCollected;
         
         SaveSystem.SaveGame(saveData);
 
@@ -303,11 +303,11 @@ public class GameManager : MonoBehaviour
         SaveData saveData = SaveSystem.LoadGame();
         if (saveData != null)
         {
-            level = saveData.levelNumber;
+            //level = saveData.levelNumber;
             if (playerInstance != null)
             {
                 playerInstance.transform.position = new Vector3(saveData.playerPositionX, saveData.playerPositionY, saveData.playerPositionZ);
-                playerInstance.keysCollected = saveData.numberOfCollectedKeyes;
+                //playerInstance.keysCollected = saveData.numberOfCollectedKeyes;
             }
             else
             {
@@ -459,6 +459,7 @@ public class GameManager : MonoBehaviour
     public void NewLevel()
     {
         //save the number of current level
+
         /*
         DataLevel saveLevel = new DataLevel();
         DataLevel.level = level + 1;
