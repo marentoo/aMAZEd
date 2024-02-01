@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1592517cf81484424a60f86dfcafc7eb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - cellPrefab: {instanceID: 0}
+  - passagePrefab: {instanceID: 0}
+  - doorPrefab: {instanceID: 0}
+  - playerPrefab: {fileID: 9147414581145572973, guid: 217c03df26a2c8e479178e2e43622a36, type: 3}
+  - cameraFollowScript: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

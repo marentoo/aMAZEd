@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fdf3c1ca054856c4cb404092912f3d3c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - torchLight: {instanceID: 0}
+  - fireParticleSystem: {instanceID: 0}
+  - audioSource: {instanceID: 0}
+  - countdownAudioClip: {fileID: 8300000, guid: 383795ca9bd28ad408575071bdc3dcba, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
